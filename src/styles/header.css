@@ -1,0 +1,8 @@
+div.header {
+  float: right;
+  width: 100%;
+}
+
+div.header button {
+  float: right;
+}

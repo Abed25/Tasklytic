@@ -1,7 +1,10 @@
 import React from "react";
+import Footer from "../component/footer";
 import { useNavigate } from "react-router-dom";
+import { useScreenWidth } from "../context/ScreenWidthProvider";
 
 export default function Home() {
+  const screenWidth = useScreenWidth();
   const navigate = useNavigate();
 
   const buttonStyles = {
@@ -18,6 +21,7 @@ export default function Home() {
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>TODO APP</h1>
+      {/* <h2>Screen width:{screenWidth}</h2> */}
       <button onClick={() => navigate("/add-tasks")} style={buttonStyles}>
         Add Activities{" "}
       </button>{" "}
@@ -25,6 +29,7 @@ export default function Home() {
       <button onClick={() => navigate("/list-of-tasks")} style={buttonStyles}>
         View Activities{" "}
       </button>
+      <Footer />
     </div>
   );
 }

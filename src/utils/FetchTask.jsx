@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useScreenWidth } from "../context/ScreenWidthProvider";
+import Footer from "../component/footer";
+import Header from "../component/header";
 
 const FetchTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -47,6 +49,7 @@ const FetchTasks = () => {
 
   return (
     <div style={{ marginTop: "10px" }}>
+      <Header />
       <h2 style={{ textAlign: "center" }}>Task List</h2>
       <div
         style={
@@ -101,6 +104,7 @@ const FetchTasks = () => {
             ))}
         </ol>
       </div>
+      <Footer />
     </div>
   );
 };

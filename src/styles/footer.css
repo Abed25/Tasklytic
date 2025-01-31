@@ -1,0 +1,43 @@
+div.footer {
+  background-color: rgba(212, 198, 198, 0.24);
+  color: black;
+  padding-bottom: 40px;
+  margin-top: 100px;
+  width: 100%;
+  float: left;
+  box-sizing: border-box;
+}
+
+div.section1,
+div.section3 {
+  float: left;
+  margin: "2px 10px";
+  height: 100px;
+  text-align: center;
+}
+
+div.section1 h4,
+div.section3 h4 {
+  text-align: center;
+  text-decoration: underline;
+}
+
+div.section1 {
+  width: 58%;
+}
+div.section3 {
+  width: 40%;
+}
+div.section3 label {
+  color: purple;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  div.section1,
+  div.section3 {
+    width: 100%;
+    margin: 20px 4px;
+  }
+}

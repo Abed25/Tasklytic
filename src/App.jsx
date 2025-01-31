@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 import Home from "./pages/Home";
 import TaskForm from "./utils/TaskForm";
 import FetchTasks from "./utils/FetchTask";
