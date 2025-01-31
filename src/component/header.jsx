@@ -7,7 +7,7 @@ function Header() {
   return (
     <div className="header">
       <button
-        onClick={() => navigate("/list-of-tasks")}
+        onClick={() => navigate("/")}
         style={{
           padding: "10px 15px",
           backgroundColor: "#4C50AF",

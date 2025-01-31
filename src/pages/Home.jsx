@@ -20,15 +20,19 @@ export default function Home() {
 
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>TODO APP</h1>
-      {/* <h2>Screen width:{screenWidth}</h2> */}
-      <button onClick={() => navigate("/add-tasks")} style={buttonStyles}>
-        Add Activities{" "}
-      </button>{" "}
-      <br />
-      <button onClick={() => navigate("/list-of-tasks")} style={buttonStyles}>
-        View Activities{" "}
-      </button>
+      <div className="UI" style={{ height: "60vh" }}>
+        {" "}
+        <h1 style={{ textAlign: "center" }}>TODO APP</h1>
+        {/* <h2>Screen width:{screenWidth}</h2> */}
+        <button onClick={() => navigate("/add-tasks")} style={buttonStyles}>
+          Add Activities{" "}
+        </button>{" "}
+        <br />
+        <button onClick={() => navigate("/list-of-tasks")} style={buttonStyles}>
+          View Activities{" "}
+        </button>
+      </div>
+
       <Footer />
     </div>
   );
