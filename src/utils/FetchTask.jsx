@@ -4,12 +4,15 @@ import { db } from "../../firebase";
 import { useScreenWidth } from "../context/ScreenWidthProvider";
 import Footer from "../component/footer";
 import Header from "../component/header";
+import "../styles/button.css";
+import "../styles/fetch.css";
 
 const FetchTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   //Hold the size of the screen from a context variable
   const screenWidth = useScreenWidth();
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -66,16 +69,48 @@ const FetchTasks = () => {
               <li key={task.id} style={{ marginBottom: "10px" }}>
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
+                {/* Editing UI  */}
+                {status ? (
+                  <div className="editing">
+                    <h5>Edit {task.taskName} description</h5>
+                    <br />
+                    <textarea width="80%" height="200px">
+                      {task.description}
+                    </textarea>
+                    <br />
+                    <button className="green">Save Changes</button>
+                  </div>
+                ) : null}
+                {/* Editing UI ends here  */}
+
                 <p>Duration: {task.duration} hours</p>
                 <p>
                   Status:{" "}
                   <label htmlFor="status" style={{ color: "red" }}>
                     Undone
                   </label>
+                  {/* Editing UI  */}
+                  {status ? (
+                    <div className="editing">
+                      <select>
+                        <option value={false}>Undone</option>
+                        <option value={true}>Done</option>
+                      </select>
+                      <button className="green">Save Changes</button>
+                    </div>
+                  ) : null}
+                  {/* Editing UI ends here  */}
                 </p>
               </li>
             ))}
         </ol>
+        <button
+          onClick={() => setStatus(!status)}
+          className="green"
+          style={{ margin: "2px 2px 2px 25%", height: "30px" }}
+        >
+          {status ? "...UPDATING..." : "UPDATE"}
+        </button>
       </div>
 
       <div
