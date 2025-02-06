@@ -91,6 +91,31 @@ const FetchTasks = () => {
     }
   };
 
+  // Function to toggle task status
+  const handleReDoTask = async (taskId) => {
+    try {
+      const approval = confirm("Are you sure you want to redo this task");
+      if (!approval) return;
+
+      // Get the task reference
+      const taskRef = doc(db, "tasks", taskId);
+
+      // Update the status to false (undone)
+      await updateDoc(taskRef, {
+        status: false,
+      });
+
+      // Update the local state to reflect the change
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === taskId ? { ...task, status: false } : task
+        )
+      );
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
   if (loading) {
     return <p>Loading tasks...</p>;
   }
@@ -200,6 +225,13 @@ const FetchTasks = () => {
                     Done
                   </label>
                 </p>
+
+                <button
+                  className="green"
+                  onClick={() => handleReDoTask(task.id)}
+                >
+                  ReDo
+                </button>
                 <button
                   className="red"
                   onClick={() => handleDeleteTask(task.id)}
