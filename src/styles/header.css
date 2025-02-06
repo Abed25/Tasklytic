@@ -1,6 +1,7 @@
 div.header {
   float: right;
   width: 100%;
+  display: flex;
 }
 
 div.header button {

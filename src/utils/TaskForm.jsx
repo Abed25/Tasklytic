@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import Footer from "../component/footer";
 import { db } from "../../firebase"; // Ensure firebase.js is configured
 import { collection, addDoc } from "firebase/firestore";
-import Header from "../component/header";
 
 const TaskForm = () => {
   const [taskName, setTaskName] = useState("");
@@ -33,7 +31,6 @@ const TaskForm = () => {
 
   return (
     <>
-      <Header />
       <form onSubmit={handleSubmit} style={{ margin: "60px 10% 10px 10%" }}>
         <h2 style={{ textAlign: "center" }}>Add an activity</h2>
         <label>Task Name:</label>
@@ -105,7 +102,6 @@ const TaskForm = () => {
           Add Task
         </button>
       </form>
-      <Footer />
     </>
   );
 };

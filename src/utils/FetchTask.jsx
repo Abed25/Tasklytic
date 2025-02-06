@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  getFirestore,
   collection,
   getDocs,
   doc,
@@ -9,15 +8,12 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useScreenWidth } from "../context/ScreenWidthProvider";
-import Footer from "../component/footer";
-import Header from "../component/header";
 import "../styles/button.css";
 import "../styles/fetch.css";
 
 const FetchTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState(false);
   const [editableTask, setEditableTask] = useState(null); // Track the task being edited
   const [newDescription, setNewDescription] = useState(""); // Hold the new description
   const [newStatus, setNewStatus] = useState(false); // Hold the new status
@@ -135,7 +131,6 @@ const FetchTasks = () => {
 
   return (
     <div style={{ marginTop: "10px" }}>
-      <Header />
       <h2 style={{ textAlign: "center" }}>Task List</h2>
       <div
         style={
@@ -242,7 +237,6 @@ const FetchTasks = () => {
             ))}
         </ol>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -1,11 +1,11 @@
 import React from "react";
-import Footer from "../component/footer";
 import { useNavigate } from "react-router-dom";
-import { useScreenWidth } from "../context/ScreenWidthProvider";
+//import { useScreenWidth } from "../context/ScreenWidthProvider";
 import "../styles/home.css";
+import Footer from "../component/footer";
 
 export default function Home() {
-  const screenWidth = useScreenWidth();
+  // const screenWidth = useScreenWidth();
   const navigate = useNavigate();
 
   return (
@@ -13,7 +13,6 @@ export default function Home() {
       <div className="UI" style={{ height: "60vh" }}>
         {" "}
         <h1 style={{ textAlign: "center" }}>TODO APP</h1>
-        {/* <h2>Screen width:{screenWidth}</h2> */}
         <button onClick={() => navigate("/add-tasks")}>
           Add Activities{" "}
         </button>{" "}
@@ -22,7 +21,6 @@ export default function Home() {
           View Activities{" "}
         </button>
       </div>
-
       <Footer />
     </div>
   );
