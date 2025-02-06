@@ -78,7 +78,7 @@ const FetchTasks = () => {
     try {
       // Confirm before deleting
       const approval = confirm("You will permanently delete this task");
-      if (!approval) return; // Corrected the syntax
+      if (!approval) return;
 
       // Delete the task from Firestore
       const taskRef = doc(db, "tasks", taskId);

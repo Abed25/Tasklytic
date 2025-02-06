@@ -8,6 +8,14 @@ button.red {
   border: none;
   margin: 2px 4px;
 }
+button.normal {
+  padding: 10px 15px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  float: left;
+}
 
 button.green {
   background: #4caf50;
