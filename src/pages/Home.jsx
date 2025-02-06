@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 //import { useScreenWidth } from "../context/ScreenWidthProvider";
 import "../styles/home.css";
-import Footer from "../component/footer";
 
 export default function Home() {
   // const screenWidth = useScreenWidth();
@@ -21,7 +20,6 @@ export default function Home() {
           View Activities{" "}
         </button>
       </div>
-      <Footer />
     </div>
   );
 }

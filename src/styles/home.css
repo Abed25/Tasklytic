@@ -1,6 +1,7 @@
 div.UI {
   width: 100%;
   border: none;
+  box-sizing: border-box;
 }
 div.UI button {
   height: 40px;
