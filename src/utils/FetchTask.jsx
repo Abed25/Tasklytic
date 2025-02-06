@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { useScreenWidth } from "../context/ScreenWidthProvider";
 import Footer from "../component/footer";
@@ -10,9 +17,13 @@ import "../styles/fetch.css";
 const FetchTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState(false);
+  const [editableTask, setEditableTask] = useState(null); // Track the task being edited
+  const [newDescription, setNewDescription] = useState(""); // Hold the new description
+  const [newStatus, setNewStatus] = useState(false); // Hold the new status
+
   //Hold the size of the screen from a context variable
   const screenWidth = useScreenWidth();
-  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -31,7 +42,54 @@ const FetchTasks = () => {
     };
 
     fetchTasks();
-  }, [tasks]);
+  }, []);
+  const handleEditClick = (task) => {
+    setEditableTask(task); // Set the task to edit
+    setNewDescription(task.description);
+    setNewStatus(task.status);
+  };
+  const handleSaveChanges = async () => {
+    if (!editableTask) return;
+
+    try {
+      // Update the task document in Firestore
+      const taskRef = doc(db, "tasks", editableTask.id);
+      await updateDoc(taskRef, {
+        description: newDescription,
+        status: newStatus,
+      });
+      // Update local state to reflect changes
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === editableTask.id
+            ? { ...task, description: newDescription, status: newStatus }
+            : task
+        )
+      );
+      setEditableTask(null); // Reset editing
+      setNewDescription("");
+      setNewStatus(false);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      // Confirm before deleting
+      const approval = confirm("You will permanently delete this task");
+      if (!approval) return; // Corrected the syntax
+
+      // Delete the task from Firestore
+      const taskRef = doc(db, "tasks", taskId);
+      await deleteDoc(taskRef);
+
+      // Remove the task from the local state
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
 
   if (loading) {
     return <p>Loading tasks...</p>;
@@ -70,47 +128,54 @@ const FetchTasks = () => {
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
                 {/* Editing UI  */}
-                {status ? (
+                {editableTask && editableTask.id === task.id ? (
                   <div className="editing">
                     <h5>Edit {task.taskName} description</h5>
                     <br />
-                    <textarea width="80%" height="200px">
-                      {task.description}
-                    </textarea>
+                    <textarea
+                      value={newDescription}
+                      onChange={(e) => setNewDescription(e.target.value)}
+                      style={{ width: "80%", height: "100px" }}
+                    />
                     <br />
-                    <button className="green">Save Changes</button>
+                    <select
+                      value={newStatus}
+                      onChange={(e) => setNewStatus(e.target.value === "true")}
+                    >
+                      <option value={false}>Undone</option>
+                      <option value={true}>Done</option>
+                    </select>
+                    <br />
+                    <button className="green" onClick={handleSaveChanges}>
+                      Save Changes
+                    </button>
                   </div>
-                ) : null}
+                ) : (
+                  <button
+                    onClick={() => handleEditClick(task)}
+                    className="green"
+                    style={{ marginTop: "10px" }}
+                  >
+                    Edit
+                  </button>
+                )}
                 {/* Editing UI ends here  */}
-
                 <p>Duration: {task.duration} hours</p>
                 <p>
                   Status:{" "}
                   <label htmlFor="status" style={{ color: "red" }}>
                     Undone
                   </label>
-                  {/* Editing UI  */}
-                  {status ? (
-                    <div className="editing">
-                      <select>
-                        <option value={false}>Undone</option>
-                        <option value={true}>Done</option>
-                      </select>
-                      <button className="green">Save Changes</button>
-                    </div>
-                  ) : null}
-                  {/* Editing UI ends here  */}
                 </p>
+                <button
+                  className="red"
+                  onClick={() => handleDeleteTask(task.id)}
+                >
+                  Delete
+                </button>
               </li>
             ))}
         </ol>
-        <button
-          onClick={() => setStatus(!status)}
-          className="green"
-          style={{ margin: "2px 2px 2px 25%", height: "30px" }}
-        >
-          {status ? "...UPDATING..." : "UPDATE"}
-        </button>
       </div>
 
       <div
@@ -135,6 +200,12 @@ const FetchTasks = () => {
                     Done
                   </label>
                 </p>
+                <button
+                  className="red"
+                  onClick={() => handleDeleteTask(task.id)}
+                >
+                  Delete
+                </button>
               </li>
             ))}
         </ol>
