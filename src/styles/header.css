@@ -6,3 +6,7 @@ div.header {
 div.header button {
   float: right;
 }
+
+div.header Link {
+  cursor: pointer;
+}
