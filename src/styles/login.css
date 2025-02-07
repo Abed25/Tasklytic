@@ -1,0 +1,52 @@
+div.login {
+  width: 300px;
+  margin: auto;
+  margin-top: 40px;
+  border: gray 1px solid;
+  padding: 20px;
+  text-align: center;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+div.login h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+div.login form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+div.login input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+div.login button {
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px 2px;
+}
+div.login button:hover {
+  background: #0056b3;
+}
+div.login p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+div.login a {
+  color: #007bff;
+  text-decoration: none;
+}
+div.login a:hover {
+  text-decoration: underline;
+}

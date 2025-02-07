@@ -1,5 +1,5 @@
 div.header {
-  float: right;
+  /* float: right; */
   width: 100%;
   display: flex;
 }
