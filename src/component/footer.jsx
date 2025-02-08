@@ -1,9 +1,10 @@
 import React from "react";
+import "../styles/footer.css";
 
 function Footer() {
   return (
-    <div>
-      <h2>General footer</h2>
+    <div className="footer">
+      <p>@copyrights 2025</p>
     </div>
   );
 }

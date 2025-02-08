@@ -5,8 +5,8 @@ import "../styles/button.css";
 
 export default function Subheader() {
   return (
-    <div className="header">
-      <Link to={"/"}>
+    <div className="subheader">
+      <Link to={"/home"}>
         <button
           className="normal"
           style={{

@@ -5,7 +5,7 @@ import "../styles/footer.css";
 export default function SubFooter() {
   const navigate = useNavigate();
   return (
-    <div className="footer">
+    <div className="subfooter">
       <div className="section1">
         <h4>About the app</h4>
         <p>Am here to manage your daily task efficiently.</p>

@@ -1,9 +1,10 @@
 import React from "react";
 
-function Header() {
+function Header(props) {
+  const { name } = props;
   return (
     <div className="header">
-      <h2>General Header</h2>
+      <h2>Todo App</h2>
     </div>
   );
 }

@@ -1,7 +1,18 @@
 div.footer {
+  background-color: black;
+  width: 100%;
+  color: white;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+div.subfooter {
   background-color: rgba(212, 198, 198, 0.24);
   color: black;
   padding-bottom: 40px;
+  margin-bottom: 100px;
   margin-top: 100px;
   width: 100%;
   float: left;

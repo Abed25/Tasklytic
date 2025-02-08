@@ -14,7 +14,7 @@ import ProtectedLayout from "./Layouts/protectedLayout"; // Import Protected Lay
 function Layout() {
   return (
     <div>
-      <Header />
+      <Header name="props" />
       <div className="content">
         <Routes>
           {/* Public Routes */}

@@ -1,13 +1,26 @@
 div.header {
-  /* float: right; */
+  background-color: black;
+  color: aliceblue;
+  width: 100%;
+}
+div.header h2,
+div.header h3 {
+  margin: 0;
+}
+div.header h2 {
+  padding: 4px;
+  text-align: center;
+}
+div.subheader {
+  color: black;
   width: 100%;
   display: flex;
 }
 
-div.header button {
+div.subheader button {
   float: right;
 }
 
-div.header Link {
+div.subheader Link {
   cursor: pointer;
 }

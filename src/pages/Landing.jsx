@@ -17,29 +17,17 @@ export default function Landing() {
     <div className="landing">
       <h1>Welcome to the To-Do App</h1>
       <p>Organize your tasks efficiently.</p>
-
       {user ? (
-        <button
-          onClick={handleLogout}
-          className="green"
-          style={{
-            width: "250px",
-            margin: "20px 10px",
-            letterSpacing: "2px",
-          }}
-        >
+        <button onClick={() => navigate("/home")} className="green">
+          Manage tasks
+        </button>
+      ) : null}
+      {user ? (
+        <button onClick={handleLogout} className="green">
           Logout
         </button>
       ) : (
-        <button
-          onClick={() => navigate("/login")}
-          className="green"
-          style={{
-            width: "250px",
-            margin: "20px 10px",
-            letterSpacing: "2px",
-          }}
-        >
+        <button onClick={() => navigate("/login")} className="green">
           Login
         </button>
       )}

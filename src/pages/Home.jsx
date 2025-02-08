@@ -11,7 +11,7 @@ export default function Home() {
     <div>
       <div className="UI" style={{ height: "60vh" }}>
         {" "}
-        <h1 style={{ textAlign: "center" }}>TODO APP</h1>
+        <h1 style={{ textAlign: "center" }}>Features</h1>
         <button onClick={() => navigate("/add-tasks")}>
           Add Activities{" "}
         </button>{" "}
