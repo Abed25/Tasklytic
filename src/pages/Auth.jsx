@@ -38,6 +38,7 @@ const SignUp = () => {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        style={{ marginTop: "10px" }}
         required
       />
       <input
@@ -45,6 +46,7 @@ const SignUp = () => {
         placeholder="Confirm Password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        style={{ marginTop: "10px" }}
         required
       />
       <button onClick={handleSignUp}>Sign Up</button>
