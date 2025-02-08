@@ -117,11 +117,19 @@ const FetchTasks = () => {
   };
 
   if (loading) {
-    return <p>Loading tasks...</p>;
+    return (
+      <div className="emptyDiv">
+        <p>Loading tasks...</p>
+      </div>
+    );
   }
 
   if (tasks.length === 0) {
-    return <p>No tasks found.</p>;
+    return (
+      <div className="emptyDiv">
+        <p>No tasks found.</p>
+      </div>
+    );
   }
 
   const divStyles = {

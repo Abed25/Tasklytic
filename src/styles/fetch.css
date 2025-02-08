@@ -13,3 +13,11 @@ div.editing textarea {
   width: 90%;
   height: 60px;
 }
+
+div.emptyDiv {
+  height: 70vh;
+}
+div.emptyDiv p {
+  text-align: center;
+  margin-top: 100px;
+}
