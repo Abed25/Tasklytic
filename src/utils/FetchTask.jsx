@@ -7,11 +7,13 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useAuth } from "../context/AuthProvider";
 import { useScreenWidth } from "../context/ScreenWidthProvider";
 import "../styles/button.css";
 import "../styles/fetch.css";
 
 const FetchTasks = () => {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editableTask, setEditableTask] = useState(null); // Track the task being edited
@@ -23,12 +25,13 @@ const FetchTasks = () => {
 
   useEffect(() => {
     const fetchTasks = async () => {
+      if (!user) return; // Ensure user is logged in
       try {
         const querySnapshot = await getDocs(collection(db, "tasks"));
-        const tasksData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const tasksData = querySnapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((task) => task.userId === user.uid); // Only fetch tasks for the logged-in user
+
         setTasks(tasksData);
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -38,7 +41,8 @@ const FetchTasks = () => {
     };
 
     fetchTasks();
-  }, []);
+  }, [user]); // Re-run when user changes
+
   const handleEditClick = (task) => {
     setEditableTask(task); // Set the task to edit
     setNewDescription(task.description);

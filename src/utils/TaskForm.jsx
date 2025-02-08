@@ -1,34 +1,46 @@
 import React, { useState } from "react";
 import { db } from "../../firebase"; // Ensure firebase.js is configured
 import { collection, addDoc } from "firebase/firestore";
+import { useAuth } from "../context/AuthProvider";
 
 const TaskForm = () => {
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
   const [status, setStatus] = useState(false);
+  const { user } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("You must be logged in to add tasks.");
+      return;
+    }
+
     try {
       const docRef = await addDoc(collection(db, "tasks"), {
         taskName,
         description,
-        duration: parseInt(duration, 10), // Convert to a number
+        duration: parseInt(duration, 10), // Convert to number
         status,
+        userId: user.uid, // Store the logged-in user's ID
+        createdAt: new Date(), // Optional: Timestamp for sorting
       });
+
       console.log("Document written with ID: ", docRef.id);
       alert("Task added successfully!");
+
+      // Reset form fields
       setTaskName("");
       setDescription("");
       setDuration("");
-      setStatus("undone");
+      setStatus(false);
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Failed to add task.");
     }
   };
-
   return (
     <>
       <form onSubmit={handleSubmit} style={{ margin: "60px 10% 10px 10%" }}>
