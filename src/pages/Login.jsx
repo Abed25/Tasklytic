@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthProvider";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
@@ -18,6 +19,16 @@ const Login = () => {
       navigate("/home");
     } catch (error) {
       alert("Login failed: " + error.message);
+    }
+  };
+  const handleForgotPassword = async (email) => {
+    const auth = getAuth();
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent! Check your inbox.");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      alert("Failed to send reset email. Check if the email typed is correct.");
     }
   };
 
@@ -41,6 +52,10 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
+      <p>
+        Forgot password?{" "}
+        <Link onClick={() => handleForgotPassword(email)}>Reset password</Link>
+      </p>
       <p>
         Don't have an account? <Link to="/signup">Sign up</Link>
       </p>
