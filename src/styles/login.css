@@ -20,7 +20,7 @@ div.login form {
   gap: 10px;
 }
 div.login input {
-  width: 100%;
+  width: 90%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
