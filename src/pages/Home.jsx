@@ -10,14 +10,30 @@ export default function Home() {
   return (
     <div>
       <div className="UI" style={{ height: "60vh" }}>
-        {" "}
-        <h1 style={{ textAlign: "center" }}>Features</h1>
-        <button onClick={() => navigate("/add-tasks")}>
+        <h1>Features</h1>
+        <button
+          onClick={() => navigate("/add-tasks")}
+          title="Create an activity."
+        >
           Add Activities{" "}
-        </button>{" "}
-        <br />
-        <button onClick={() => navigate("/list-of-tasks")}>
+        </button>
+        <button
+          onClick={() => navigate("/list-of-tasks")}
+          title="Take a look at your recorded activities."
+        >
           View Activities{" "}
+        </button>
+
+        <button
+          style={{
+            background: "white",
+            border: "1px gray solid",
+            color: "black",
+          }}
+          title="More features coming..."
+          onClick={() => alert("More features coming soon!")}
+        >
+          +
         </button>
       </div>
     </div>

@@ -14,7 +14,7 @@ div.header h2 {
 div.subheader {
   color: black;
   width: 100%;
-  display: flex;
+  /* display: flex; */
 }
 
 div.subheader button {

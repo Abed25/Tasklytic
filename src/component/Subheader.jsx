@@ -11,7 +11,6 @@ export default function Subheader() {
           className="normal"
           style={{
             backgroundColor: "#4C50AF",
-            float: "left",
           }}
         >
           Home
