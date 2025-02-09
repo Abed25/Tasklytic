@@ -4,6 +4,12 @@ div.UI {
   box-sizing: border-box;
   margin: 10px;
 }
+div.UI h2 {
+  margin: 10px 2px 0 6px;
+  padding: 0;
+  width: 96%;
+  float: left;
+}
 div.UI button {
   width: 150px;
   height: 150px;

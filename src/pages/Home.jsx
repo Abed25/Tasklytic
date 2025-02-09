@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div>
       <div className="UI" style={{ height: "60vh" }}>
-        <h1>Features</h1>
+        <h2>Features</h2>
         <button
           onClick={() => navigate("/add-tasks")}
           title="Create an activity."
