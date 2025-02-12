@@ -13,7 +13,9 @@ div.editing textarea {
   width: 90%;
   height: 60px;
 }
-
+div.editing button {
+  margin: 10px 0 4px 4px;
+}
 div.emptyDiv {
   height: 70vh;
 }

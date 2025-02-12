@@ -159,6 +159,13 @@ const FetchTasks = () => {
               <li key={task.id} style={{ marginBottom: "10px" }}>
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
+                <p>Duration: {task.duration} hours</p>
+                <p>
+                  Status:{" "}
+                  <label htmlFor="status" style={{ color: "red" }}>
+                    Undone
+                  </label>
+                </p>
                 {/* Editing UI  */}
                 {editableTask && editableTask.id === task.id ? (
                   <div className="editing">
@@ -170,6 +177,7 @@ const FetchTasks = () => {
                       style={{ width: "80%", height: "100px" }}
                     />
                     <br />
+                    <label htmlFor="status">Change status: </label>
                     <select
                       value={newStatus}
                       onChange={(e) => setNewStatus(e.target.value === "true")}
@@ -192,13 +200,7 @@ const FetchTasks = () => {
                   </button>
                 )}
                 {/* Editing UI ends here  */}
-                <p>Duration: {task.duration} hours</p>
-                <p>
-                  Status:{" "}
-                  <label htmlFor="status" style={{ color: "red" }}>
-                    Undone
-                  </label>
-                </p>
+
                 <button
                   className="red"
                   onClick={() => handleDeleteTask(task.id)}
