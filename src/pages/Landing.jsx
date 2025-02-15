@@ -15,22 +15,40 @@ export default function Landing() {
 
   return (
     <div className="landing">
-      <h1>Welcome to the To-Do App</h1>
-      <p>Organize your tasks efficiently.</p>
-      {user ? (
-        <button onClick={() => navigate("/home")} className="green">
-          Manage tasks
+      <header className="landing-header">
+        <h1>Boost Your Productivity</h1>
+        <p>Manage tasks effortlessly with our To-Do App.</p>
+      </header>
+
+      <section className="landing-content">
+        <img
+          src="/assets/todo-app-preview.webp"
+          alt="To-Do App Preview"
+          className="app-preview"
+        />
+        <p>
+          Stay organized, track progress, and never miss a task. Whether you're
+          at work or home, our app makes task management easy!
+        </p>
+        <button
+          onClick={() => navigate(user ? "/home" : "/signup")}
+          className="cta-button"
+        >
+          {user ? "Go to Dashboard" : "Get Started"}
         </button>
-      ) : null}
-      {user ? (
-        <button onClick={handleLogout} className="green">
-          Logout
-        </button>
-      ) : (
-        <button onClick={() => navigate("/login")} className="green">
-          Login
-        </button>
-      )}
+      </section>
+
+      <footer className="landing-footer">
+        {user ? (
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        ) : (
+          <button onClick={() => navigate("/login")} className="login-button">
+            Login
+          </button>
+        )}
+      </footer>
     </div>
   );
 }
