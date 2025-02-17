@@ -1,10 +1,10 @@
 div.landing {
-  padding: 100px 10px 10px 20px;
-  height: 70vh;
+  padding: 10px 10px 10px 20px;
+  height: 90vh;
   width: 100%;
   float: left;
   text-align: center;
-  background: linear-gradient(to bottom, #4caf50, #8e44ad);
+  background: linear-gradient(to bottom, #4caf50, #586e23be);
   color: white;
   display: flex;
   flex-direction: column;
@@ -12,31 +12,33 @@ div.landing {
   justify-content: center;
 }
 
-div.landing h1 {
+/* div.landing h1 {
+  padding-top: 100px;
   font-weight: 800;
   font-size: 2.5rem;
-}
+} */
 
 div.landing p {
   font-size: 1.2rem;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   max-width: 600px;
   line-height: 1.5;
 }
 
 .app-preview {
   width: 100%;
-  max-width: 400px;
-  margin: 20px 0;
-  border-radius: 10px;
+  max-width: 300px;
+  margin: 2px 0;
+  border-radius: 4px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button {
   padding: 12px 24px;
   font-size: 1.2rem;
-  background: #ffd700;
-  border: none;
+  background: #1eb62e;
+  color: rgba(255, 255, 255, 0.9);
+  border: gray 1px solid;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
@@ -44,7 +46,8 @@ div.landing p {
 }
 
 .cta-button:hover {
-  background: #ffc300;
+  background: #28f12f;
+  color: white;
 }
 
 .landing-footer {
@@ -55,8 +58,9 @@ div.landing p {
 .logout-button {
   padding: 10px 20px;
   font-size: 1rem;
-  background: #ff5733;
-  border: none;
+  background: #1eb62e;
+  color: rgba(255, 255, 255, 0.9);
+  border: gray 1px solid;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
@@ -65,7 +69,8 @@ div.landing p {
 
 .login-button:hover,
 .logout-button:hover {
-  background: #e74c3c;
+  background: #28f12f;
+  color: white;
 }
 
 @media (max-width: 500px) {

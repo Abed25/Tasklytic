@@ -28,7 +28,7 @@ div.login input {
 }
 div.login button {
   padding: 10px;
-  background: #007bff;
+  background: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
@@ -37,14 +37,14 @@ div.login button {
   margin: 10px 2px;
 }
 div.login button:hover {
-  background: #0056b3;
+  background: #28f12f;
 }
 div.login p {
   margin-top: 10px;
   font-size: 14px;
 }
 div.login a {
-  color: #007bff;
+  color: #4caf50;
   text-decoration: none;
 }
 div.login a:hover {

@@ -49,7 +49,9 @@ const SignUp = () => {
         style={{ marginTop: "10px" }}
         required
       />
-      <button onClick={handleSignUp}>Sign Up</button>
+      <button onClick={handleSignUp} style={{ width: "90%" }}>
+        Sign Up
+      </button>
       <p>
         Already have an account? <Link to="/login">Login</Link>
       </p>

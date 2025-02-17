@@ -2,6 +2,7 @@ import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import image from "../assets/todo-app-preview.webp";
 import "../styles/landing.css";
 import "../styles/button.css";
 
@@ -16,20 +17,11 @@ export default function Landing() {
   return (
     <div className="landing">
       <header className="landing-header">
-        <h1>Boost Your Productivity</h1>
+        {/* <h1>Boost Your Productivity</h1> */}
         <p>Manage tasks effortlessly with our To-Do App.</p>
       </header>
 
       <section className="landing-content">
-        <img
-          src="/assets/todo-app-preview.webp"
-          alt="To-Do App Preview"
-          className="app-preview"
-        />
-        <p>
-          Stay organized, track progress, and never miss a task. Whether you're
-          at work or home, our app makes task management easy!
-        </p>
         <button
           onClick={() => navigate(user ? "/home" : "/signup")}
           className="cta-button"
