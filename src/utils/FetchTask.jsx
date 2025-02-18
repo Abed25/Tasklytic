@@ -186,11 +186,12 @@ const FetchTasks = () => {
         }
       >
         <h3 style={{ textAlign: "center" }}>Undone Tasks</h3>
-        <ol>
+        <ol className="incomplete">
           {tasks
             .filter((task) => !task.status)
             .map((task) => (
               <li
+                className="incomplete"
                 key={task.id}
                 style={{ marginBottom: "10px" }}
                 onClick={(e) => {
@@ -206,6 +207,7 @@ const FetchTasks = () => {
                     ); // Trigger navigation when not editing
                   }
                 }}
+                title={`Schedule - ${task.taskName}`}
               >
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
@@ -227,6 +229,7 @@ const FetchTasks = () => {
                     }}
                     className="green"
                     style={{ marginTop: "10px" }}
+                    title={`Edit - ${task.taskName}`}
                   >
                     Edit
                   </button>
@@ -238,6 +241,7 @@ const FetchTasks = () => {
                     e.stopPropagation();
                     handleDeleteTask(task.id);
                   }}
+                  title={`Delete - ${task.taskName}`}
                 >
                   Delete
                 </button>
@@ -259,11 +263,12 @@ const FetchTasks = () => {
         }
       >
         <h3 style={{ textAlign: "center" }}>Done Tasks</h3>
-        <ol>
+        <ol className="complete">
           {tasks
             .filter((task) => task.status)
             .map((task) => (
               <li
+                className="complete"
                 key={task.id}
                 style={{ marginBottom: "10px" }}
                 onClick={(e) => {
@@ -279,6 +284,7 @@ const FetchTasks = () => {
                     ); // Trigger navigation when not editing
                   }
                 }}
+                title={`View - ${task.taskName}`}
               >
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
@@ -296,6 +302,7 @@ const FetchTasks = () => {
                     e.stopPropagation();
                     handleReDoTask(task.id);
                   }}
+                  title={`ReDo - ${task.taskName}`}
                 >
                   ReDo
                 </button>
@@ -305,6 +312,7 @@ const FetchTasks = () => {
                     e.stopPropagation();
                     handleDeleteTask(task.id);
                   }}
+                  title={`Delete - ${task.taskName}`}
                 >
                   Delete
                 </button>

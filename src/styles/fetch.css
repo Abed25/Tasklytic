@@ -23,3 +23,20 @@ div.emptyDiv p {
   text-align: center;
   margin-top: 100px;
 }
+ol.incomplete,
+ol.complete {
+  padding: 0 0 0 28px;
+}
+li.complete,
+li.incomplete {
+  padding: 2px;
+  margin: 2px;
+}
+li.complete:hover {
+  border: green 1px dotted;
+  cursor: grab;
+}
+li.incomplete:hover {
+  border: red 1px dotted;
+  cursor: grab;
+}
