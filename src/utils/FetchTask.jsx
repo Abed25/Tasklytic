@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
   collection,
@@ -24,7 +23,6 @@ const FetchTasks = () => {
 
   //Hold the size of the screen from a context variable
   const screenWidth = useScreenWidth();
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
