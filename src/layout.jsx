@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import TaskForm from "./utils/TaskForm";
 import FetchTasks from "./utils/FetchTask";
+import TaskDetails from "./pages/TaskDetails";
 import ProtectedLayout from "./Layouts/protectedLayout"; // Import Protected Layout
 
 function Layout() {
@@ -34,6 +35,7 @@ function Layout() {
             <Route path="/home" element={<Home />} />
             <Route path="/add-tasks" element={<TaskForm />} />
             <Route path="/list-of-tasks" element={<FetchTasks />} />
+            <Route path="/task/:taskName" element={<TaskDetails />} />
           </Route>
         </Routes>
       </div>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -22,6 +24,8 @@ const FetchTasks = () => {
 
   //Hold the size of the screen from a context variable
   const screenWidth = useScreenWidth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -141,9 +145,41 @@ const FetchTasks = () => {
     margin: "20px 0 10px 0",
   };
 
-  return (
-    <div style={{ marginTop: "10px" }}>
-      <h2 style={{ textAlign: "center" }}>Task List</h2>
+  //INTERFACES
+  //EDITING UI
+  const EditingUI = (tasking) => {
+    return (
+      <div className="editing">
+        <h5>Edit {tasking.taskName} description</h5>
+        <br />
+        <textarea
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+          style={{ width: "80%", height: "100px" }}
+        />
+        <br />
+        <label htmlFor="status">Change status: </label>
+        <select
+          value={newStatus}
+          onChange={(e) => setNewStatus(e.target.value === "true")}
+        >
+          <option value={false}>Undone</option>
+          <option value={true}>Done</option>
+        </select>
+        <br />
+        <button className="green" onClick={handleSaveChanges}>
+          Save Changes
+        </button>
+        <button className="green" onClick={() => setEditableTask(null)}>
+          Close
+        </button>
+      </div>
+    );
+  };
+
+  //Incomplete Tasks UI
+  const Incomplete = () => {
+    return (
       <div
         style={
           screenWidth > 600
@@ -156,7 +192,23 @@ const FetchTasks = () => {
           {tasks
             .filter((task) => !task.status)
             .map((task) => (
-              <li key={task.id} style={{ marginBottom: "10px" }}>
+              <li
+                key={task.id}
+                style={{ marginBottom: "10px" }}
+                onClick={(e) => {
+                  // Prevent navigation when editing
+                  if (editableTask && editableTask.id === task.id) {
+                    e.stopPropagation(); // Prevent navigation during editing
+                  } else {
+                    navigate(
+                      `/task/${task.taskName.replace(
+                        new RegExp("\\s+", "g"),
+                        "-"
+                      )}`
+                    ); // Trigger navigation when not editing
+                  }
+                }}
+              >
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
                 <p>Duration: {task.duration} hours</p>
@@ -168,42 +220,26 @@ const FetchTasks = () => {
                 </p>
                 {/* Editing UI  */}
                 {editableTask && editableTask.id === task.id ? (
-                  <div className="editing">
-                    <h5>Edit {task.taskName} description</h5>
-                    <br />
-                    <textarea
-                      value={newDescription}
-                      onChange={(e) => setNewDescription(e.target.value)}
-                      style={{ width: "80%", height: "100px" }}
-                    />
-                    <br />
-                    <label htmlFor="status">Change status: </label>
-                    <select
-                      value={newStatus}
-                      onChange={(e) => setNewStatus(e.target.value === "true")}
-                    >
-                      <option value={false}>Undone</option>
-                      <option value={true}>Done</option>
-                    </select>
-                    <br />
-                    <button className="green" onClick={handleSaveChanges}>
-                      Save Changes
-                    </button>
-                  </div>
+                  <EditingUI tasKing={"task"} />
                 ) : (
                   <button
-                    onClick={() => handleEditClick(task)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditClick(task);
+                    }}
                     className="green"
                     style={{ marginTop: "10px" }}
                   >
                     Edit
                   </button>
                 )}
-                {/* Editing UI ends here  */}
 
                 <button
                   className="red"
-                  onClick={() => handleDeleteTask(task.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteTask(task.id);
+                  }}
                 >
                   Delete
                 </button>
@@ -211,7 +247,12 @@ const FetchTasks = () => {
             ))}
         </ol>
       </div>
+    );
+  };
 
+  //Complete taskUI
+  const Complete = () => {
+    return (
       <div
         style={
           screenWidth > 600
@@ -224,7 +265,23 @@ const FetchTasks = () => {
           {tasks
             .filter((task) => task.status)
             .map((task) => (
-              <li key={task.id} style={{ marginBottom: "10px" }}>
+              <li
+                key={task.id}
+                style={{ marginBottom: "10px" }}
+                onClick={(e) => {
+                  // Prevent navigation when editing
+                  if (editableTask && editableTask.id === task.id) {
+                    e.stopPropagation(); // Prevent navigation during editing
+                  } else {
+                    navigate(
+                      `/task/${task.taskName.replace(
+                        new RegExp("\\s+", "g"),
+                        "-"
+                      )}`
+                    ); // Trigger navigation when not editing
+                  }
+                }}
+              >
                 <strong>{task.taskName}</strong>
                 <p>{task.description}</p>
                 <p>Duration: {task.duration} hours</p>
@@ -237,13 +294,19 @@ const FetchTasks = () => {
 
                 <button
                   className="green"
-                  onClick={() => handleReDoTask(task.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleReDoTask(task.id);
+                  }}
                 >
                   ReDo
                 </button>
                 <button
                   className="red"
-                  onClick={() => handleDeleteTask(task.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteTask(task.id);
+                  }}
                 >
                   Delete
                 </button>
@@ -251,6 +314,14 @@ const FetchTasks = () => {
             ))}
         </ol>
       </div>
+    );
+  };
+
+  return (
+    <div style={{ marginTop: "10px" }}>
+      <h2 style={{ textAlign: "center" }}>Task List</h2>
+      <Incomplete />
+      <Complete />
     </div>
   );
 };
