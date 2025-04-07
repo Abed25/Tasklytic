@@ -1,6 +1,6 @@
 div.landing {
   padding: 10px 10px 10px 20px;
-  height: 90vh;
+  height: 80vh;
   width: 100%;
   float: left;
   text-align: center;
@@ -11,12 +11,6 @@ div.landing {
   align-items: center;
   justify-content: center;
 }
-
-/* div.landing h1 {
-  padding-top: 100px;
-  font-weight: 800;
-  font-size: 2.5rem;
-} */
 
 div.landing p {
   font-size: 1.2rem;
@@ -75,7 +69,7 @@ div.landing p {
 
 @media (max-width: 500px) {
   div.landing {
-    height: 50vh;
+    height: 90vh;
     padding: 50px 10px;
   }
   div.landing h1 {
