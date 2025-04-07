@@ -4,8 +4,8 @@ import {
   collection,
   getDocs,
   doc,
-  updateDoc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuth } from "../context/AuthProvider";
@@ -17,23 +17,17 @@ const FetchTasks = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editableTask, setEditableTask] = useState(null); // Track the task being edited
-  const [newDescription, setNewDescription] = useState(""); // Hold the new description
-  const [newStatus, setNewStatus] = useState(false); // Hold the new status
-
-  //Hold the size of the screen from a context variable
   const screenWidth = useScreenWidth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTasks = async () => {
-      if (!user) return; // Ensure user is logged in
+      if (!user) return;
       try {
         const querySnapshot = await getDocs(collection(db, "tasks"));
         const tasksData = querySnapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .filter((task) => task.userId === user.uid); // Only fetch tasks for the logged-in user
-
+          .filter((task) => task.userId === user.uid);
         setTasks(tasksData);
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -43,74 +37,28 @@ const FetchTasks = () => {
     };
 
     fetchTasks();
-  }, [user]); // Re-run when user changes
-
-  const handleEditClick = (task) => {
-    setEditableTask(task); // Set the task to edit
-    setNewDescription(task.description);
-    setNewStatus(task.status);
-  };
-  const handleSaveChanges = async () => {
-    if (!editableTask) return;
-
-    try {
-      // Update the task document in Firestore
-      const taskRef = doc(db, "tasks", editableTask.id);
-      await updateDoc(taskRef, {
-        description: newDescription,
-        status: newStatus,
-      });
-      // Update local state to reflect changes
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === editableTask.id
-            ? { ...task, description: newDescription, status: newStatus }
-            : task
-        )
-      );
-      setEditableTask(null); // Reset editing
-      setNewDescription("");
-      setNewStatus(false);
-    } catch (error) {
-      console.error("Error updating task:", error);
-    }
-  };
+  }, [user]);
 
   const handleDeleteTask = async (taskId) => {
-    try {
-      // Confirm before deleting
-      const approval = confirm("You will permanently delete this task");
-      if (!approval) return;
+    const approval = window.confirm("You will permanently delete this task");
+    if (!approval) return;
 
-      // Delete the task from Firestore
+    try {
       const taskRef = doc(db, "tasks", taskId);
       await deleteDoc(taskRef);
-
-      // Remove the task from the local state
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
 
-  // Function to toggle task status
-  const handleReDoTask = async (taskId) => {
+  const handleToggleTaskStatus = async (taskId, currentStatus) => {
     try {
-      const approval = confirm("Are you sure you want to redo this task");
-      if (!approval) return;
-
-      // Get the task reference
       const taskRef = doc(db, "tasks", taskId);
-
-      // Update the status to false (undone)
-      await updateDoc(taskRef, {
-        status: false,
-      });
-
-      // Update the local state to reflect the change
+      await updateDoc(taskRef, { status: !currentStatus });
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
-          task.id === taskId ? { ...task, status: false } : task
+          task.id === taskId ? { ...task, status: !currentStatus } : task
         )
       );
     } catch (error) {
@@ -134,200 +82,87 @@ const FetchTasks = () => {
     );
   }
 
-  const divStyles = {
-    width: "49%",
-    float: "left",
-  };
-  const divStylesMobile = {
-    width: "99%",
-    margin: "20px 0 10px 0",
-  };
-
-  //INTERFACES
-  //EDITING UI
-  const EditingUI = (tasking) => {
-    return (
-      <div className="editing">
-        <h5>Edit {tasking.taskName} description</h5>
-        <br />
-        <textarea
-          value={newDescription}
-          onChange={(e) => setNewDescription(e.target.value)}
-          style={{ width: "80%", height: "100px" }}
-        />
-        <br />
-        <label htmlFor="status">Change status: </label>
-        <select
-          value={newStatus}
-          onChange={(e) => setNewStatus(e.target.value === "true")}
+  // Task Card UI
+  const TaskCard = ({ task, isCompleted }) => (
+    <div
+      className={`task-card ${isCompleted ? "completed" : "incomplete"}`}
+      onClick={() =>
+        navigate(`/task/${task.taskName.replace(new RegExp("\\s+", "g"), "-")}`)
+      }
+    >
+      <h3>{task.taskName}</h3>
+      <p>{task.description}</p>
+      <p>Duration: {task.duration} hours</p>
+      <p>
+        Status:{" "}
+        {isCompleted ? (
+          <span className="status-done">Done</span>
+        ) : (
+          <span className="status-undone">Undone</span>
+        )}
+      </p>
+      <div className="button-container">
+        {isCompleted ? (
+          <button
+            className="action-btn green"
+            style={{ height: "auto" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleTaskStatus(task.id, true); // Switch to undone
+            }}
+          >
+            Redo
+          </button>
+        ) : (
+          <button
+            className="action-btn blue"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleTaskStatus(task.id, false); // Switch to done
+            }}
+          >
+            Done
+          </button>
+        )}
+        <button
+          className="action-btn red"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDeleteTask(task.id);
+          }}
         >
-          <option value={false}>Undone</option>
-          <option value={true}>Done</option>
-        </select>
-        <br />
-        <button className="green" onClick={handleSaveChanges}>
-          Save Changes
-        </button>
-        <button className="green" onClick={() => setEditableTask(null)}>
-          Close
+          Delete
         </button>
       </div>
-    );
-  };
+    </div>
+  );
 
-  //Incomplete Tasks UI
-  const Incomplete = () => {
-    return (
-      <div
-        style={
-          screenWidth > 600
-            ? { ...divStyles, background: "#FFEEEE" }
-            : { ...divStylesMobile, background: "#FFEEEE" }
-        }
-      >
-        <h3 style={{ textAlign: "center" }}>Undone Tasks</h3>
-        <ol className="incomplete">
-          {tasks
-            .filter((task) => !task.status)
-            .map((task) => (
-              <li
-                className="incomplete"
-                key={task.id}
-                style={{ marginBottom: "10px" }}
-                onClick={(e) => {
-                  // Prevent navigation when editing
-                  if (editableTask && editableTask.id === task.id) {
-                    e.stopPropagation(); // Prevent navigation during editing
-                  } else {
-                    navigate(
-                      `/task/${task.taskName.replace(
-                        new RegExp("\\s+", "g"),
-                        "-"
-                      )}`
-                    ); // Trigger navigation when not editing
-                  }
-                }}
-                title={`Schedule - ${task.taskName}`}
-              >
-                <strong>{task.taskName}</strong>
-                <p>{task.description}</p>
-                <p>Duration: {task.duration} hours</p>
-                <p>
-                  Status:{" "}
-                  <label htmlFor="status" style={{ color: "red" }}>
-                    Undone
-                  </label>
-                </p>
-                {/* Editing UI  */}
-                {editableTask && editableTask.id === task.id ? (
-                  <EditingUI tasKing={"task"} />
-                ) : (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditClick(task);
-                    }}
-                    className="green"
-                    style={{ marginTop: "10px" }}
-                    title={`Edit - ${task.taskName}`}
-                  >
-                    Edit
-                  </button>
-                )}
+  const IncompleteTasks = () => (
+    <div className="task-column incomplete-tasks">
+      <h2>Undone Tasks</h2>
+      {tasks
+        .filter((task) => !task.status)
+        .map((task) => (
+          <TaskCard key={task.id} task={task} isCompleted={false} />
+        ))}
+    </div>
+  );
 
-                <button
-                  className="red"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteTask(task.id);
-                  }}
-                  title={`Delete - ${task.taskName}`}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-        </ol>
-      </div>
-    );
-  };
-
-  //Complete taskUI
-  const Complete = () => {
-    return (
-      <div
-        style={
-          screenWidth > 600
-            ? { ...divStyles, background: "#EEFFEE", float: "right" }
-            : { divStylesMobile, background: "#EEFFEE" }
-        }
-      >
-        <h3 style={{ textAlign: "center" }}>Done Tasks</h3>
-        <ol className="complete">
-          {tasks
-            .filter((task) => task.status)
-            .map((task) => (
-              <li
-                className="complete"
-                key={task.id}
-                style={{ marginBottom: "10px" }}
-                onClick={(e) => {
-                  // Prevent navigation when editing
-                  if (editableTask && editableTask.id === task.id) {
-                    e.stopPropagation(); // Prevent navigation during editing
-                  } else {
-                    navigate(
-                      `/task/${task.taskName.replace(
-                        new RegExp("\\s+", "g"),
-                        "-"
-                      )}`
-                    ); // Trigger navigation when not editing
-                  }
-                }}
-                title={`View - ${task.taskName}`}
-              >
-                <strong>{task.taskName}</strong>
-                <p>{task.description}</p>
-                <p>Duration: {task.duration} hours</p>
-                <p>
-                  Status:{" "}
-                  <label htmlFor="status" style={{ color: "green" }}>
-                    Done
-                  </label>
-                </p>
-
-                <button
-                  className="green"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleReDoTask(task.id);
-                  }}
-                  title={`ReDo - ${task.taskName}`}
-                >
-                  ReDo
-                </button>
-                <button
-                  className="red"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteTask(task.id);
-                  }}
-                  title={`Delete - ${task.taskName}`}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-        </ol>
-      </div>
-    );
-  };
+  const CompletedTasks = () => (
+    <div className="task-column completed-tasks">
+      <h2>Done Tasks</h2>
+      {tasks
+        .filter((task) => task.status)
+        .map((task) => (
+          <TaskCard key={task.id} task={task} isCompleted={true} />
+        ))}
+    </div>
+  );
 
   return (
-    <div style={{ marginTop: "10px" }}>
-      <h2 style={{ textAlign: "center" }}>Task List</h2>
-      <Incomplete />
-      <Complete />
+    <div className="task-list-container">
+      <IncompleteTasks />
+      <CompletedTasks />
     </div>
   );
 };
