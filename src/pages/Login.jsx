@@ -4,6 +4,7 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,10 +16,10 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      alert("Login successful!");
+      toast.success("Login successful!");
       navigate("/home");
     } catch (error) {
-      alert("Login failed: " + error.message);
+      toast.error("Login failed: " + error.message);
     }
   };
   const handleForgotPassword = async (email) => {
