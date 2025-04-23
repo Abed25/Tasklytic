@@ -17,6 +17,8 @@ const FetchTasks = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [incompleteSortOption, setIncompleteSortOption] = useState("new"); // Sort option for Incomplete tasks
+  const [completedSortOption, setCompletedSortOption] = useState("new"); // Sort option for Completed tasks
   const screenWidth = useScreenWidth();
   const navigate = useNavigate();
 
@@ -63,6 +65,27 @@ const FetchTasks = () => {
       );
     } catch (error) {
       console.error("Error updating task status:", error);
+    }
+  };
+
+  const handleSortChange = (e, section) => {
+    if (section === "incomplete") {
+      setIncompleteSortOption(e.target.value);
+    } else {
+      setCompletedSortOption(e.target.value);
+    }
+  };
+
+  const sortTasks = (tasks, sortOption) => {
+    switch (sortOption) {
+      case "new":
+        return tasks.sort((a, b) => a.createdAt - b.createdAt); // Assuming createdAt exists
+      case "duration":
+        return tasks.sort((a, b) => a.duration - b.duration);
+      case "alphabetical":
+        return tasks.sort((a, b) => a.taskName.localeCompare(b.taskName));
+      default:
+        return tasks;
     }
   };
 
@@ -137,27 +160,51 @@ const FetchTasks = () => {
     </div>
   );
 
-  const IncompleteTasks = () => (
-    <div className="task-column incomplete-tasks">
-      <h2>Undone Tasks</h2>
-      {tasks
-        .filter((task) => !task.status)
-        .map((task) => (
+  const IncompleteTasks = () => {
+    const incompleteTasks = tasks.filter((task) => !task.status);
+    return (
+      <div className="task-column incomplete-tasks">
+        <h2>Undone Tasks</h2>
+        <div>
+          <label>Sort by:</label>
+          <select
+            onChange={(e) => handleSortChange(e, "incomplete")}
+            value={incompleteSortOption}
+          >
+            <option value="new">Newest</option>
+            <option value="duration">Duration</option>
+            <option value="alphabetical">Alphabetical</option>
+          </select>
+        </div>
+        {sortTasks(incompleteTasks, incompleteSortOption).map((task) => (
           <TaskCard key={task.id} task={task} isCompleted={false} />
         ))}
-    </div>
-  );
+      </div>
+    );
+  };
 
-  const CompletedTasks = () => (
-    <div className="task-column completed-tasks">
-      <h2>Done Tasks</h2>
-      {tasks
-        .filter((task) => task.status)
-        .map((task) => (
+  const CompletedTasks = () => {
+    const completedTasks = tasks.filter((task) => task.status);
+    return (
+      <div className="task-column completed-tasks">
+        <h2>Done Tasks</h2>
+        <div>
+          <label>Sort by:</label>
+          <select
+            onChange={(e) => handleSortChange(e, "completed")}
+            value={completedSortOption}
+          >
+            <option value="new">Newest</option>
+            <option value="duration">Duration</option>
+            <option value="alphabetical">Alphabetical</option>
+          </select>
+        </div>
+        {sortTasks(completedTasks, completedSortOption).map((task) => (
           <TaskCard key={task.id} task={task} isCompleted={true} />
         ))}
-    </div>
-  );
+      </div>
+    );
+  };
 
   return (
     <div className="task-list-container">
