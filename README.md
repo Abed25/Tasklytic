@@ -1,32 +1,34 @@
-# ✅ Todo App – React + Firebase
+# ✅ Todo App – React + Firebase (Now a PWA 🚀)
 
-A simple yet powerful **Todo App** built with **React** and **Firebase**, designed to help users organize their tasks, track progress, and manage their productivity.
+A simple yet powerful **Todo App** built with **React** and **Firebase**, now installable as a **Progressive Web App (PWA)**. Designed to help users organize their tasks, track progress and boost productivity on the go.
 
 ## 🔗 Live App
 
-👉 [Create an account & start organizing]([https://to-do-dusky-iota.vercel.app]))
+👉 [Create an account & start organizing](https://to-do-dusky-iota.vercel.app)
 
 ## 🧰 Tech Stack
 
-- **Frontend:** React.js (with Hooks & Context API)
+- **Frontend:** React.js (Hooks + Context API)
 - **Backend & Auth:** Firebase Authentication
 - **Database:** Firebase Firestore
-- **Hosting:** Firebase Hosting (or Vercel)
+- **Hosting:** Vercel
+- **PWA:** Installable on desktop & mobile
 
 ## ✨ Features
 
 - 📝 Create, edit, and delete tasks
 - 🔐 User authentication (Sign up & Login)
-- 📁 Each user gets a personal task space
-- 📊 Task status updates (e.g., completed, pending)
+- 📁 Personal task space per user
+- 📊 Task status tracking (completed, pending)
 - 🔄 Real-time sync across devices
+- 📲 Installable as a PWA (Add to Home Screen)
 
 ## 🚧 Upcoming Enhancements
 
 - ⏰ Task scheduling and reminders
-- 📶 Offline support (Progressive Web App – PWA)
-- 📅 Calendar integration
-- 🎨 Dark mode toggle
+- 📶 Full offline support (currently in progress)
+- 📅 Calendar view for tasks
+- 🌙 Dark mode toggle
 
 ## 🚀 Getting Started (Local Development)
 
@@ -34,4 +36,4 @@ A simple yet powerful **Todo App** built with **React** and **Firebase**, design
 git clone https://github.com/Abed25/todo-app.git
 cd client
 npm install
-npm start
+npm run dev
