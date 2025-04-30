@@ -16,7 +16,7 @@ A simple yet powerful **Todo App** built with **React** and **Firebase**, now in
 
 ## ✨ Features
 
-- 📝 Create, edit, and delete tasks, view
+- 📝 Create, edit, and delete tasks
 - 🔐 User authentication (Sign up & Login)
 - 📁 Personal task space per user
 - 📊 Task status tracking (completed, pending)
