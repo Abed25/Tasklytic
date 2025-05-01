@@ -1,14 +1,19 @@
+import { Outlet, useLocation } from "react-router-dom";
 import SubHeader from "../component/Subheader";
 import SubFooter from "../component/SubFooter";
-import { Outlet } from "react-router-dom";
 
 const ProtectedLayout = () => {
+  const location = useLocation();
+
   return (
     <div>
-      <SubHeader />
+      {/* Only show SubHeader if not on /home */}
+      {location.pathname !== "/home" && <SubHeader />}
+
       <div className="protected-content">
         <Outlet />
       </div>
+
       <SubFooter />
     </div>
   );
