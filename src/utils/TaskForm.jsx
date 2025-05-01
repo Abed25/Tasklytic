@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { db } from "../../firebase"; // Ensure firebase.js is configured
+import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthProvider";
+import "../styles/TaskDetails.css";
 
 const TaskForm = () => {
   const [taskName, setTaskName] = useState("");
@@ -22,99 +23,81 @@ const TaskForm = () => {
       const docRef = await addDoc(collection(db, "tasks"), {
         taskName,
         description,
-        duration: parseInt(duration, 10), // Convert to number
+        duration: parseInt(duration, 10),
         status,
-        userId: user.uid, // Store the logged-in user's ID
-        createdAt: new Date(), // Optional: Timestamp for sorting
+        userId: user.uid,
+        createdAt: new Date(),
       });
 
       console.log("Document written with ID: ", docRef.id);
-      alert("Task added successfully!");
+      alert("✅ Task added successfully!");
 
-      // Reset form fields
       setTaskName("");
       setDescription("");
       setDuration("");
       setStatus(false);
     } catch (e) {
       console.error("Error adding document: ", e);
-      alert("Failed to add task.");
+      alert("❌ Failed to add task.");
     }
   };
+
   return (
-    <>
-      <form onSubmit={handleSubmit} style={{ margin: "60px 10% 10px 10%" }}>
-        <h2 style={{ textAlign: "center" }}>Add an activity</h2>
-        <label>Task Name:</label>
-        <input
-          type="text"
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          required
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "8px",
-            marginTop: "5px",
-          }}
-        />
-        <label>Description:</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "8px",
-            marginTop: "5px",
-          }}
-        ></textarea>
-        <label>Duration (hours):</label>
-        <input
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          required
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "8px",
-            marginTop: "5px",
-          }}
-        />
+    <div className="task-container">
+      <h2 className="form-title">Add an Activity</h2>
+      <form onSubmit={handleSubmit} className="task-form">
+        <div className="form-group">
+          <label>Task Name</label>
+          <input
+            type="text"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+            required
+            className="input"
+            placeholder="e.g. Morning Meeting"
+          />
+        </div>
 
-        <label>Status:</label>
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          required
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "8px",
-            marginTop: "5px",
-          }}
-        >
-          <option value={false}>Undone</option>
-          <option value={true}>Done</option>
-        </select>
+        <div className="form-group">
+          <label>Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            className="textarea"
+            placeholder="Briefly describe the task..."
+          />
+        </div>
 
-        <button
-          type="submit"
-          style={{
-            padding: "10px 15px",
-            backgroundColor: "#4CAF50",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            margin: "10px",
-          }}
-        >
+        <div className="form-group">
+          <label>Duration (in hours)</label>
+          <input
+            type="number"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            required
+            className="input"
+            placeholder="e.g. 2"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value === "true")}
+            className="input"
+          >
+            <option value={false}>Undone</option>
+            <option value={true}>Done</option>
+          </select>
+        </div>
+
+        <button type="submit" className="btn save-btn">
           Add Task
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

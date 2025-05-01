@@ -1,40 +1,53 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-//import { useScreenWidth } from "../context/ScreenWidthProvider";
+import { FaPlus, FaListAlt, FaTasks } from "react-icons/fa";
 import "../styles/home.css";
 
 export default function Home() {
-  // const screenWidth = useScreenWidth();
   const navigate = useNavigate();
 
-  return (
-    <div>
-      <div className="UI" style={{ height: "60vh" }}>
-        <h2>Features</h2>
-        <button
-          onClick={() => navigate("/add-tasks")}
-          title="Create an activity."
-        >
-          Add Activities{" "}
-        </button>
-        <button
-          onClick={() => navigate("/list-of-tasks")}
-          title="Take a look at your recorded activities."
-        >
-          View Activities{" "}
-        </button>
+  const features = [
+    {
+      title: "Add Activities",
+      icon: <FaTasks size={40} />,
+      onClick: () => navigate("/add-tasks"),
+      tooltip: "Create an activity.",
+    },
+    {
+      title: "View Activities",
+      icon: <FaListAlt size={40} />,
+      onClick: () => navigate("/list-of-tasks"),
+      tooltip: "Take a look at your recorded activities.",
+    },
+    {
+      title: "Coming Soon",
+      icon: <FaPlus size={40} />,
+      onClick: () => alert("More features coming soon!"),
+      tooltip: "More features coming...",
+      style: {
+        background: "#fff",
+        color: "#333",
+        border: "1px solid #ccc",
+      },
+    },
+  ];
 
-        <button
-          style={{
-            background: "white",
-            border: "1px gray solid",
-            color: "black",
-          }}
-          title="More features coming..."
-          onClick={() => alert("More features coming soon!")}
-        >
-          +
-        </button>
+  return (
+    <div className="dashboard-container">
+      <h2 className="dashboard-heading">Dashboard</h2>
+      <div className="dashboard-grid">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="dashboard-card"
+            onClick={feature.onClick}
+            title={feature.tooltip}
+            style={feature.style}
+          >
+            {feature.icon}
+            <p>{feature.title}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

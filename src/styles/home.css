@@ -1,37 +1,55 @@
-div.UI {
-  width: 100%;
-  border: none;
-  box-sizing: border-box;
-  margin: 10px;
+.dashboard-container {
+  padding: 20px;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #e0f7fa, #e1bee7);
 }
-div.UI h2 {
-  margin: 10px 2px 0 6px;
-  padding: 0;
-  width: 96%;
-  float: left;
+
+.dashboard-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
 }
-div.UI button {
-  width: 150px;
-  height: 150px;
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  height: 160px;
   background-color: #4caf50;
+  color: white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: transform 0.25s ease-in-out, background-color 0.25s ease-in-out;
-  margin: 10px;
-  float: left;
-  color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  border: none;
+  transition: all 0.3s ease;
+  text-align: center;
 }
-div.UI button:hover {
+
+.dashboard-card:hover {
+  transform: scale(1.07);
   background-color: #28f12f;
-  transform: scale(1.13);
   font-weight: bold;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
+
+.dashboard-card p {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
 @media (max-width: 500px) {
-  div.UI button {
-    width: 60px;
-    height: 60px;
+  .dashboard-card {
+    height: 100px;
+  }
+
+  .dashboard-card p {
+    font-size: 12px;
   }
 }
