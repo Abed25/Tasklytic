@@ -16,31 +16,35 @@ export default function Landing() {
 
   return (
     <div className="landing">
-      <header className="landing-header">
-        {/* <h1>Boost Your Productivity</h1> */}
-        <p>Manage tasks effortlessly with our To-Do App.</p>
-      </header>
+      <div className="landing-card">
+        <header>
+          <h1>Boost Your Productivity</h1>
+          <p>Manage your tasks effortlessly with our modern To-Do App.</p>
+        </header>
 
-      <section className="landing-content">
-        <button
-          onClick={() => navigate(user ? "/home" : "/signup")}
-          className="cta-button"
-        >
-          {user ? "Go to Dashboard" : "Get Started"}
-        </button>
-      </section>
+        <img src={image} alt="App Preview" className="app-preview" />
 
-      <footer className="landing-footer">
-        {user ? (
-          <button onClick={handleLogout} className="logout-button">
-            Logout
+        <section>
+          <button
+            onClick={() => navigate(user ? "/home" : "/signup")}
+            className="cta-button"
+          >
+            {user ? "Go to Dashboard" : "Get Started"}
           </button>
-        ) : (
-          <button onClick={() => navigate("/login")} className="login-button">
-            Login
-          </button>
-        )}
-      </footer>
+        </section>
+
+        <footer className="landing-footer">
+          {user ? (
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
+          ) : (
+            <button onClick={() => navigate("/login")} className="login-button">
+              Login
+            </button>
+          )}
+        </footer>
+      </div>
     </div>
   );
 }

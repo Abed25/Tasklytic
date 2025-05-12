@@ -1,85 +1,84 @@
 div.landing {
-  padding: 10px 10px 10px 20px;
   height: 100vh;
-  width: 96%;
-  float: left;
-  text-align: center;
-  background: linear-gradient(to bottom, #4caf50, #586e23be);
-  color: white;
+  width: auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(to bottom right, #4caf50, #586e23be);
+  padding: 20px;
 }
 
-div.landing p {
-  font-size: 1.2rem;
-  /* margin-top: 10px; */
-  max-width: 600px;
-  line-height: 1.5;
+.landing-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  padding: 40px 30px;
+  max-width: 500px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.landing-card h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.landing-card p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
 .app-preview {
   width: 100%;
-  max-width: 300px;
-  margin: 2px 0;
-  border-radius: 4px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 320px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.cta-button {
-  padding: 12px 24px;
-  font-size: 1.2rem;
-  background: #1eb62e;
-  color: rgba(255, 255, 255, 0.9);
-  border: gray 1px solid;
-  border-radius: 5px;
+.cta-button,
+.logout-button,
+.login-button {
+  padding: 16px 32px;
+  font-size: 1.3rem;
+  background: #00c853; /* vivid green */
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 14px rgba(0, 200, 83, 0.5);
+  transition: transform 0.2s ease, background 0.3s ease;
 }
 
-.cta-button:hover {
-  background: #28f12f;
-  color: white;
+.cta-button:hover,
+.logout-button:hover,
+.login-button:hover {
+  background: #00e676;
+  transform: scale(1.05);
 }
 
 .landing-footer {
-  margin-top: 30px;
-}
-
-.login-button,
-.logout-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background: #1eb62e;
-  color: rgba(255, 255, 255, 0.9);
-  border: gray 1px solid;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s ease-in-out;
-}
-
-.login-button:hover,
-.logout-button:hover {
-  background: #28f12f;
-  color: white;
+  margin-top: 25px;
 }
 
 @media (max-width: 500px) {
-  div.landing {
-    height: 90vh;
-    padding: 50px 10px;
+  .landing-card {
+    padding: 25px 20px;
   }
-  div.landing h1 {
-    font-size: 22px;
+
+  .landing-card h1 {
+    font-size: 1.5rem;
   }
-  div.landing p {
+
+  .landing-card p {
     font-size: 1rem;
   }
-  .cta-button {
-    font-size: 1rem;
-    padding: 10px 18px;
+
+  .app-preview {
+    max-width: 250px;
   }
 }
