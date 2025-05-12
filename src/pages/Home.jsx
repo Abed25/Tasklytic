@@ -40,7 +40,28 @@ export default function Home() {
 
   return (
     <div className="dashboard-container">
-      <h2 className="dashboard-heading">Dashboard</h2>
+      <h2 className="dashboard-heading">Welcome Back!</h2>
+      <p className="dashboard-subtext">
+        Plan, track and achieve your goals efficiently.
+      </p>
+
+      {/* Summary Section */}
+      <div className="summary-cards">
+        <div className="summary-card">
+          <strong>14</strong>
+          <span>Total Activities</span>
+        </div>
+        <div className="summary-card">
+          <strong>8</strong>
+          <span>Completed</span>
+        </div>
+        <div className="summary-card">
+          <strong>6</strong>
+          <span>Pending</span>
+        </div>
+      </div>
+
+      {/* Feature Buttons */}
       <div className="dashboard-grid">
         {features.map((feature, index) => (
           <div
@@ -54,6 +75,24 @@ export default function Home() {
             <p>{feature.title}</p>
           </div>
         ))}
+      </div>
+
+      {/* Recent Activity Log */}
+      <div className="recent-activity">
+        <h3>Recent Activity</h3>
+        <ul>
+          <li>✔️ Submitted Weekly Report</li>
+          <li>🕒 Updated Task: Market Research</li>
+          <li>🎯 Achieved Milestone: 10 Tasks Done</li>
+        </ul>
+      </div>
+
+      {/* Tip or Quote */}
+      <div className="daily-tip">
+        <blockquote>
+          “Productivity is never an accident. It is always the result of a
+          commitment to excellence.”
+        </blockquote>
       </div>
     </div>
   );
