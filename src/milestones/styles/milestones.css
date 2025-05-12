@@ -1,0 +1,72 @@
+/* Fullscreen container to center the form */
+.form-wrapper {
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  background-color: #f0f2f5;
+  padding: 40px 0; /* Optional spacing from top and bottom */
+  width: 100%;
+}
+
+/* Form container */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  padding: 24px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Input and textarea styling */
+form input,
+form textarea {
+  display: block;
+  width: 96%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Button styling */
+form button {
+  padding: 12px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #43a047;
+}
+
+/* Optional label styling */
+form label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* Milestone list */
+ul {
+  max-width: 500px;
+  margin: 20px auto;
+  padding-left: 20px;
+}
+
+ul li {
+  background-color: #e8f5e9;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  list-style: disc;
+}
