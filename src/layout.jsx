@@ -10,7 +10,9 @@ import Home from "./pages/Home";
 import TaskForm from "./utils/TaskForm";
 import FetchTasks from "./utils/FetchTask";
 import TaskDetails from "./pages/TaskDetails";
-import ProtectedLayout from "./Layouts/protectedLayout"; // Import Protected Layout
+import ProtectedLayout from "./Layouts/protectedLayout";
+import Milestones from "./milestones/pages/Milestones";
+import MilestoneDay from "./milestones/pages/MilestoneDay"; // ✅ Import this
 
 function Layout() {
   return (
@@ -24,7 +26,7 @@ function Layout() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<NotFound />} />
 
-          {/* Protected Routes with SubHeader & SubFooter */}
+          {/* Protected Routes */}
           <Route
             element={
               <ProtectedRoute>
@@ -36,6 +38,9 @@ function Layout() {
             <Route path="/add-tasks" element={<TaskForm />} />
             <Route path="/list-of-tasks" element={<FetchTasks />} />
             <Route path="/task/:taskName" element={<TaskDetails />} />
+            <Route path="/milestones" element={<Milestones />} />
+            <Route path="/milestones/:date" element={<MilestoneDay />} />{" "}
+            {/* ✅ New Route */}
           </Route>
         </Routes>
       </div>

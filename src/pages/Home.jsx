@@ -20,6 +20,12 @@ export default function Home() {
       tooltip: "Take a look at your recorded activities.",
     },
     {
+      title: "Milestones",
+      icon: <FaListAlt size={40} />,
+      onClick: () => navigate("/milestones"),
+      tooltip: "View Your archivements",
+    },
+    {
       title: "Coming Soon",
       icon: <FaPlus size={40} />,
       onClick: () => alert("More features coming soon!"),
