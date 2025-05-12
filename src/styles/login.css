@@ -18,6 +18,7 @@ div.login form {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: auto;
 }
 div.login input {
   width: 90%;
