@@ -1,0 +1,55 @@
+/* calendar.css */
+
+.fc {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  /* border: red 1px solid; */
+}
+
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* .fc-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  margin: 2px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+} */
+.fc-button {
+  background-color: #4caf50 !important;
+  color: white !important;
+  border: none !important;
+  margin: 2px !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
+.fc-daygrid-day {
+  border: 1px solid #ddd;
+  height: 100px;
+  vertical-align: top;
+  padding: 4px;
+}
+
+.fc-daygrid-day-number {
+  font-weight: bold;
+  color: #444;
+}
+
+.fc-event {
+  background-color: #2196f3;
+  color: white;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
