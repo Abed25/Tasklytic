@@ -73,4 +73,7 @@ select:focus {
     margin: 30px 15px;
     padding: 20px;
   }
+  .task-container form {
+    width: 88%;
+  }
 }
