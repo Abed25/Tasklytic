@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaPlus, FaListAlt, FaTasks, FaBullseye } from "react-icons/fa";
+import { FaPlus, FaClipboardList, FaTasks, FaBullseye } from "react-icons/fa";
 import "../styles/home.css";
 // At the top of your Home.jsx
 import {
@@ -21,14 +21,8 @@ export default function Home() {
 
   const features = [
     {
-      title: "Add Activities",
-      icon: <FaTasks size={40} />,
-      onClick: () => navigate("/add-tasks"),
-      tooltip: "Create an activity.",
-    },
-    {
-      title: "View Activities",
-      icon: <FaListAlt size={40} />,
+      title: "Manage Activities",
+      icon: <FaClipboardList size={40} />,
       onClick: () => navigate("/list-of-tasks"),
       tooltip: "Take a look at your recorded activities.",
     },
