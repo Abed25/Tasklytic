@@ -14,7 +14,7 @@ const ProtectedLayout = () => {
         <Outlet />
       </div>
 
-      <SubFooter />
+      {location.pathname !== "/home" && <SubFooter />}
     </div>
   );
 };
