@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaPlus, FaListAlt, FaTasks } from "react-icons/fa";
+import { FaPlus, FaListAlt, FaTasks, FaBullseye } from "react-icons/fa";
 import "../styles/home.css";
 
 export default function Home() {
@@ -21,7 +21,7 @@ export default function Home() {
     },
     {
       title: "Milestones",
-      icon: <FaListAlt size={40} />,
+      icon: <FaBullseye size={40} />,
       onClick: () => navigate("/milestones"),
       tooltip: "View Your archivements",
     },
