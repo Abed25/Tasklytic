@@ -6,6 +6,7 @@ div.landing {
   justify-content: center;
   background: linear-gradient(to bottom right, #4caf50, #586e23be);
   padding: 20px;
+  margin-bottom: 50px;
 }
 
 .landing-card {
