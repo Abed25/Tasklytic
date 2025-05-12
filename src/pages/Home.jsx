@@ -2,6 +2,19 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaListAlt, FaTasks, FaBullseye } from "react-icons/fa";
 import "../styles/home.css";
+// At the top of your Home.jsx
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -37,6 +50,21 @@ export default function Home() {
       },
     },
   ];
+
+  // Dummy data for visualization
+  const barData = [
+    { name: "Jan", activities: 30 },
+    { name: "Feb", activities: 45 },
+    { name: "Mar", activities: 60 },
+    { name: "Apr", activities: 50 },
+  ];
+
+  const pieData = [
+    { name: "Completed", value: 65 },
+    { name: "Pending", value: 35 },
+  ];
+
+  const COLORS = ["#4caf50", "#f44336"];
 
   return (
     <div className="dashboard-container">
@@ -85,6 +113,41 @@ export default function Home() {
           <li>🕒 Updated Task: Market Research</li>
           <li>🎯 Achieved Milestone: 10 Tasks Done</li>
         </ul>
+      </div>
+      <div className="dashboard-charts">
+        <h3>Performance Overview</h3>
+        <div className="chart-section">
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={barData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="activities" fill="#4caf50" />
+            </BarChart>
+          </ResponsiveContainer>
+
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={80}
+                fill="#8884d8"
+                label
+              >
+                {pieData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Legend />
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       {/* Tip or Quote */}
