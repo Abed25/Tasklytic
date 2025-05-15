@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus, FaClipboardList, FaTasks, FaBullseye } from "react-icons/fa";
 import "../styles/home.css";
+import MonthlyCountdown from "../component/MonthlyCountdown";
 // At the top of your Home.jsx
 import {
   BarChart,
@@ -62,11 +63,13 @@ export default function Home() {
 
   return (
     <div className="dashboard-container">
+      <div style={{ position: "absolute", top: "40px", right: "20px" }}>
+        <MonthlyCountdown />
+      </div>
       <h2 className="dashboard-heading">Welcome Back!</h2>
       <p className="dashboard-subtext">
         Plan, track and achieve your goals efficiently.
       </p>
-
       {/* Summary Section */}
       <div className="summary-cards">
         <div className="summary-card">
@@ -82,7 +85,6 @@ export default function Home() {
           <span>Pending</span>
         </div>
       </div>
-
       {/* Feature Buttons */}
       <div className="dashboard-grid">
         {features.map((feature, index) => (
@@ -98,7 +100,6 @@ export default function Home() {
           </div>
         ))}
       </div>
-
       {/* Recent Activity Log */}
       <div className="recent-activity">
         <h3>Recent Activity</h3>
@@ -143,7 +144,6 @@ export default function Home() {
           </ResponsiveContainer>
         </div>
       </div>
-
       {/* Tip or Quote */}
       <div className="daily-tip">
         <blockquote>
