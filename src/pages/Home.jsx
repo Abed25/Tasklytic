@@ -63,13 +63,13 @@ export default function Home() {
 
   return (
     <div className="dashboard-container">
-      <div style={{ position: "absolute", top: "40px", right: "20px" }}>
-        <MonthlyCountdown />
+      <div className="timer">
+        <h2 className="dashboard-heading">Welcome Back!</h2>
+        <p className="dashboard-subtext">
+          Plan, track and achieve your goals efficiently.
+        </p>
       </div>
-      <h2 className="dashboard-heading">Welcome Back!</h2>
-      <p className="dashboard-subtext">
-        Plan, track and achieve your goals efficiently.
-      </p>
+
       {/* Summary Section */}
       <div className="summary-cards">
         <div className="summary-card">
@@ -150,6 +150,14 @@ export default function Home() {
           “Productivity is never an accident. It is always the result of a
           commitment to excellence.”
         </blockquote>
+      </div>
+      <div className="intro">
+        <MonthlyCountdown />
+        <p style={{ float: "right", width: "50%" }}>
+          Time never pauses; it flows like a river — silent, relentless, and
+          beyond recall. Either you move with it or watch your moments drift
+          away.
+        </p>
       </div>
     </div>
   );
