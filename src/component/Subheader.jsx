@@ -1,32 +1,42 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FaHome, FaListAlt, FaTasks } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { FaHome, FaList, FaPlus } from "react-icons/fa";
 import "../styles/header.css";
 import "../styles/button.css";
 
-export default function Subheader() {
+const Subheader = () => {
+  const location = useLocation();
+  const isTaskPage = location.pathname === "/list-of-tasks";
+  const isHomePage = location.pathname === "/home";
+  const isAddTaskPage = location.pathname === "/add-tasks";
+
   return (
     <div className="subheader">
-      <Link to={"/home"}>
-        <button className="normal" style={{ backgroundColor: "#4C50AF" }}>
-          <FaHome style={{ marginRight: "8px" }} />
-          Home
-        </button>
-      </Link>
-
-      <Link to={"/list-of-tasks"}>
-        <button className="normal" style={{ backgroundColor: "#4CAF50" }}>
-          <FaListAlt style={{ marginRight: "8px" }} />
-          View Tasks
-        </button>
-      </Link>
-
-      <Link to={"/add-tasks"}>
-        <button className="normal" style={{ backgroundColor: "#4CAF50" }}>
-          <FaTasks style={{ marginRight: "8px" }} />
-          Add Tasks
-        </button>
-      </Link>
+      <div className="nav-section">
+        <Link 
+          to="/home" 
+          className={`nav-btn ${isHomePage ? 'active' : ''}`} 
+          style={{ backgroundColor: isHomePage ? "#00695C" : "#009688" }}
+        >
+          <FaHome /> Home
+        </Link>
+        <Link 
+          to="/list-of-tasks" 
+          className={`nav-btn ${isTaskPage ? 'active' : ''}`} 
+          style={{ backgroundColor: isTaskPage ? "#00695C" : "#009688" }}
+        >
+          <FaList /> Tasks
+        </Link>
+        <Link 
+          to="/add-tasks" 
+          className={`nav-btn ${isAddTaskPage ? 'active' : ''}`} 
+          style={{ backgroundColor: isAddTaskPage ? "#00695C" : "#009688" }}
+        >
+          <FaPlus /> New Task
+        </Link>
+      </div>
     </div>
   );
-}
+};
+
+export default Subheader;
