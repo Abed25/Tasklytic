@@ -251,10 +251,10 @@ const FetchTasks = () => {
       
       <div className="task-meta">
         <span className="duration">
-          <FaClock /> {task.duration} hours
+          <FaClock /> {task.duration.value} {task.duration.unit}
         </span>
         <span className="created-at">
-          Created: {new Date(task.createdAt).toLocaleDateString()}
+          <FaCalendarAlt /> Created: {new Date(task.createdAt).toLocaleDateString()}
         </span>
       </div>
 
