@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useAuth } from "../context/AuthProvider";
 import { 
   FaPlus, 
   FaClipboardList, 
@@ -39,12 +42,54 @@ import {
 export default function Home() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [productivityScore, setProductivityScore] = useState(85);
-  const [streak, setStreak] = useState(7);
+  const { user } = useAuth();
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [productivityScore, setProductivityScore] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [focusTime, setFocusTime] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+
+  // Fetch tasks from Firestore
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (!user) return;
+      try {
+        const querySnapshot = await getDocs(collection(db, "tasks"));
+        const tasksData = querySnapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((task) => task.userId === user.uid);
+        setTasks(tasksData);
+        
+        // Calculate productivity metrics
+        const completedTasks = tasksData.filter(task => task.status).length;
+        const totalTasks = tasksData.length;
+        const productivityScore = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        setProductivityScore(productivityScore);
+
+        // Calculate focus time (sum of all task durations)
+        const totalFocusTime = tasksData.reduce((acc, task) => acc + (task.duration || 0), 0);
+        setFocusTime(totalFocusTime);
+
+        // Calculate streak (simplified version - can be enhanced)
+        const today = new Date();
+        const lastWeekTasks = tasksData.filter(task => {
+          const taskDate = new Date(task.createdAt);
+          return (today - taskDate) <= 7 * 24 * 60 * 60 * 1000;
+        });
+        setStreak(lastWeekTasks.length > 0 ? 1 : 0);
+
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, [user]);
 
   // Mobile navigation items
   const navItems = [
@@ -63,23 +108,33 @@ export default function Home() {
     setTouchEnd(e.targetTouches[0].clientY);
     if (touchStart - touchEnd > 100) {
       setIsRefreshing(true);
-      // Simulate refresh
+      // Refresh data
+      fetchTasks();
       setTimeout(() => {
         setIsRefreshing(false);
       }, 1500);
     }
   };
 
-  // Simulated data for productivity trends
-  const productivityData = [
-    { day: "Mon", score: 75 },
-    { day: "Tue", score: 82 },
-    { day: "Wed", score: 88 },
-    { day: "Thu", score: 85 },
-    { day: "Fri", score: 90 },
-    { day: "Sat", score: 78 },
-    { day: "Sun", score: 85 },
-  ];
+  // Generate productivity trend data from actual tasks
+  const generateProductivityData = () => {
+    const last7Days = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      return date.toLocaleDateString('en-US', { weekday: 'short' });
+    }).reverse();
+
+    return last7Days.map(day => {
+      const dayTasks = tasks.filter(task => {
+        const taskDate = new Date(task.createdAt);
+        return taskDate.toLocaleDateString('en-US', { weekday: 'short' }) === day;
+      });
+      const completedTasks = dayTasks.filter(task => task.status).length;
+      const totalTasks = dayTasks.length;
+      const score = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+      return { day, score };
+    });
+  };
 
   const features = [
     {
@@ -105,46 +160,79 @@ export default function Home() {
     },
   ];
 
+  // Calculate stats from actual tasks
   const stats = [
-    { label: "Total Tasks", value: "14", icon: <FaTasks />, color: "#4CAF50" },
-    { label: "Completed", value: "8", icon: <FaCheckCircle />, color: "#2196F3" },
-    { label: "Pending", value: "6", icon: <FaClock />, color: "#FF9800" },
+    { 
+      label: "Total Tasks", 
+      value: tasks.length.toString(), 
+      icon: <FaTasks />, 
+      color: "#4CAF50" 
+    },
+    { 
+      label: "Completed", 
+      value: tasks.filter(t => t.status).length.toString(), 
+      icon: <FaCheckCircle />, 
+      color: "#2196F3" 
+    },
+    { 
+      label: "Pending", 
+      value: tasks.filter(t => !t.status).length.toString(), 
+      icon: <FaClock />, 
+      color: "#FF9800" 
+    },
   ];
 
-  const smartRecommendations = [
-    {
-      title: "Morning Routine",
-      description: "Complete your morning tasks before 10 AM for better productivity",
-      icon: <FaRegClock />,
-      priority: "high"
-    },
-    {
-      title: "Focus Session",
-      description: "Schedule a 25-minute focus session for your pending tasks",
-      icon: <FaBrain />,
-      priority: "medium"
-    },
-    {
-      title: "Weekly Review",
-      description: "Review your weekly progress and plan for next week",
-      icon: <FaLightbulb />,
-      priority: "low"
+  // Generate smart recommendations based on actual tasks
+  const generateSmartRecommendations = () => {
+    const incompleteTasks = tasks.filter(task => !task.status);
+    const recommendations = [];
+
+    if (incompleteTasks.length > 0) {
+      const oldestTask = incompleteTasks.sort((a, b) => a.createdAt - b.createdAt)[0];
+      recommendations.push({
+        title: "Complete Pending Task",
+        description: `Don't forget to complete "${oldestTask.taskName}"`,
+        icon: <FaRegClock />,
+        priority: "high"
+      });
     }
-  ];
 
-  const barData = [
-    { name: "Jan", activities: 30 },
-    { name: "Feb", activities: 45 },
-    { name: "Mar", activities: 60 },
-    { name: "Apr", activities: 50 },
-  ];
+    if (tasks.length > 0) {
+      recommendations.push({
+        title: "Task Review",
+        description: `You have ${incompleteTasks.length} tasks pending completion`,
+        icon: <FaBrain />,
+        priority: "medium"
+      });
+    }
+
+    if (tasks.filter(t => t.status).length > 0) {
+      recommendations.push({
+        title: "Progress Check",
+        description: `You've completed ${tasks.filter(t => t.status).length} tasks so far`,
+        icon: <FaLightbulb />,
+        priority: "low"
+      });
+    }
+
+    return recommendations;
+  };
 
   const pieData = [
-    { name: "Completed", value: 65 },
-    { name: "Pending", value: 35 },
+    { name: "Completed", value: tasks.filter(t => t.status).length },
+    { name: "Pending", value: tasks.filter(t => !t.status).length },
   ];
 
   const COLORS = ["#4CAF50", "#FF9800"];
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading your dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -221,7 +309,7 @@ export default function Home() {
           <div className="chart-card">
             <h3>Productivity Trend</h3>
             <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={productivityData}>
+              <AreaChart data={generateProductivityData()}>
                 <defs>
                   <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#4CAF50" stopOpacity={0.8}/>
@@ -263,7 +351,7 @@ export default function Home() {
         <div className="smart-recommendations">
           <h3>Smart Recommendations</h3>
           <div className="recommendations-list">
-            {smartRecommendations.map((rec, index) => (
+            {generateSmartRecommendations().map((rec, index) => (
               <div key={index} className={`recommendation-card ${rec.priority}`}>
                 <div className="recommendation-icon">
                   {rec.icon}
@@ -281,21 +369,17 @@ export default function Home() {
       <div className="recent-activity">
         <h3>Recent Activity</h3>
         <div className="activity-list">
-          <div className="activity-item">
-            <span className="activity-icon">✔️</span>
-            <span className="activity-text">Submitted Weekly Report</span>
-            <span className="activity-time">2h ago</span>
-          </div>
-          <div className="activity-item">
-            <span className="activity-icon">🕒</span>
-            <span className="activity-text">Updated Task: Market Research</span>
-            <span className="activity-time">5h ago</span>
-          </div>
-          <div className="activity-item">
-            <span className="activity-icon">🎯</span>
-            <span className="activity-text">Achieved Milestone: 10 Tasks Done</span>
-            <span className="activity-time">1d ago</span>
-          </div>
+          {tasks.slice(0, 3).map((task, index) => (
+            <div key={index} className="activity-item">
+              <span className="activity-icon">{task.status ? "✔️" : "🕒"}</span>
+              <span className="activity-text">
+                {task.status ? "Completed" : "Updated"}: {task.taskName}
+              </span>
+              <span className="activity-time">
+                {new Date(task.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
