@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -20,11 +20,18 @@ const FetchTasks = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState('all'); // 'all', 'incomplete', 'complete'
+  const location = useLocation();
+  const [activeView, setActiveView] = useState(location.state?.initialView || 'all');
   const [incompleteSortOption, setIncompleteSortOption] = useState('newest');
   const [completeSortOption, setCompleteSortOption] = useState('newest');
   const screenWidth = useScreenWidth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state?.initialView) {
+      setActiveView(location.state.initialView);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const fetchTasks = async () => {
