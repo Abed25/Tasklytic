@@ -9,6 +9,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const AuthContext = createContext();
 
+// Define protected routes
+const PROTECTED_ROUTES = ['/home', '/list-of-tasks', '/add-tasks', '/profile'];
+
 export const useAuth = () => {
   return useContext(AuthContext);
 };
@@ -24,8 +27,8 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       setLoading(false);
 
-      // Only redirect to login if not authenticated and not already on login page
-      if (!user && location.pathname !== '/login') {
+      // Only redirect to login if trying to access a protected route while not authenticated
+      if (!user && PROTECTED_ROUTES.includes(location.pathname)) {
         navigate('/login', { replace: true });
       }
     });
