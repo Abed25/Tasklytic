@@ -123,7 +123,7 @@
 
 .meta-item svg {
   font-size: 1.5rem;
-  color: #009688;
+  color: rgba(128, 222, 234, 0.8);
   margin-top: 0.25rem;
 }
 
@@ -185,8 +185,8 @@
 .edit-input:focus,
 .edit-textarea:focus {
   outline: none;
-  border-color: #009688;
-  box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1);
+  border-color: rgba(128, 222, 234, 0.8);
+  box-shadow: 0 0 0 3px rgba(128, 222, 234, 0.1);
 }
 
 .edit-textarea {
@@ -216,7 +216,7 @@
 
 .save-button {
   padding: 0.75rem 2rem;
-  background: #009688;
+  background: rgba(128, 222, 234, 0.8);
   color: white;
   border: none;
   border-radius: 8px;
@@ -226,7 +226,7 @@
 }
 
 .save-button:hover {
-  background: #00796b;
+  background: rgba(128, 222, 234, 1);
   transform: translateY(-1px);
 }
 
@@ -245,7 +245,7 @@
   width: 50px;
   height: 50px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #009688;
+  border-top: 3px solid rgba(128, 222, 234, 0.8);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;

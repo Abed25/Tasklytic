@@ -18,7 +18,7 @@ button.normal {
 }
 
 button.green {
-  background: #4caf50;
+  background: rgba(128, 222, 234, 0.8);
 }
 
 button.red {

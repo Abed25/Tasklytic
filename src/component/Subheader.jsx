@@ -16,21 +16,21 @@ const Subheader = () => {
         <Link 
           to="/home" 
           className={`nav-btn ${isHomePage ? 'active' : ''}`} 
-          style={{ backgroundColor: isHomePage ? "#00695C" : "#009688" }}
+          style={{ backgroundColor: isHomePage ? "rgba(128, 222, 234, 1)" : "rgba(128, 222, 234, 0.8)" }}
         >
           <FaHome /> Home
         </Link>
         <Link 
           to="/list-of-tasks" 
           className={`nav-btn ${isTaskPage ? 'active' : ''}`} 
-          style={{ backgroundColor: isTaskPage ? "#00695C" : "#009688" }}
+          style={{ backgroundColor: isTaskPage ? "rgba(128, 222, 234, 1)" : "rgba(128, 222, 234, 0.8)" }}
         >
           <FaList /> Tasks
         </Link>
         <Link 
           to="/add-tasks" 
           className={`nav-btn ${isAddTaskPage ? 'active' : ''}`} 
-          style={{ backgroundColor: isAddTaskPage ? "#00695C" : "#009688" }}
+          style={{ backgroundColor: isAddTaskPage ? "rgba(128, 222, 234, 1)" : "rgba(128, 222, 234, 0.8)" }}
         >
           <FaPlus /> New Task
         </Link>

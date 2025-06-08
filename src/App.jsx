@@ -13,6 +13,8 @@ function App() {
         limit={1}
         toastClassName="text-center"
         style={{ width: "auto" }}
+        theme="light"
+        progressStyle={{ background: "rgba(128, 222, 234, 0.8)" }}
       />
       <PWAUpdater />
       <Layout />

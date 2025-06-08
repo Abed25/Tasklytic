@@ -25,7 +25,7 @@ export default function Header() {
       text: "You will be logged out!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#4CAF50",
+      confirmButtonColor: "rgba(128, 222, 234, 0.8)",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, logout",
     });
