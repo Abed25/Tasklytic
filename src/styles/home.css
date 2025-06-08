@@ -63,7 +63,7 @@
   left: 0;
   right: 0;
   height: 300px;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #80DEEA 0%, #4DD0E1 100%);
   z-index: 0;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
   animation: pulse 8s ease-in-out infinite;
@@ -74,7 +74,7 @@
   position: absolute;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.05) 100%);
+  background: radial-gradient(circle, rgba(128, 222, 234, 0.1) 0%, rgba(77, 208, 225, 0.05) 100%);
   border-radius: 50%;
   top: -150px;
   right: -150px;
@@ -83,7 +83,7 @@
 
 .floating-shape {
   position: absolute;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.05));
+  background: linear-gradient(135deg, rgba(128, 222, 234, 0.1), rgba(77, 208, 225, 0.05));
   border-radius: 50%;
   z-index: 0;
 }
@@ -128,7 +128,7 @@
   font-size: 2rem;
   color: #1e293b;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #4DD0E1 0%, #80DEEA 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -163,14 +163,14 @@
   height: 120px;
   margin: 0 auto;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #4DD0E1 0%, #80DEEA 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
   position: relative;
-  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 20px rgba(77, 208, 225, 0.3);
   animation: pulse 3s ease-in-out infinite;
 }
 
@@ -204,8 +204,8 @@
 
 .focus-icon {
   font-size: 2rem;
-  color: #6366f1;
-  filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
+  color: #80DEEA;
+  filter: drop-shadow(0 2px 4px rgba(128, 222, 234, 0.3));
 }
 
 .streak-info span, .focus-time span {
@@ -519,7 +519,7 @@
   font-style: italic;
   margin: 0;
   font-size: 1.1rem;
-  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #4DD0E1 0%, #80DEEA 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -548,7 +548,7 @@
     margin: 0;
     border-radius: 0;
     padding: 1.25rem;
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    background: linear-gradient(135deg, #80DEEA 0%, #4DD0E1 100%);
     color: white;
     animation: none;
   }
@@ -702,7 +702,7 @@
   }
 
   .nav-item.active {
-    color: #4f46e5;
+    color: #4DD0E1;
   }
 
   .nav-icon {
@@ -756,7 +756,7 @@
   }
 
   .swipe-action.edit {
-    background: #4f46e5;
+    background: #4DD0E1;
   }
 
   .swipe-action.delete {
