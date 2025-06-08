@@ -1,3 +1,45 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  text-align: center;
+  z-index: 1000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.footer p {
+  color: #ffffff;
+  margin: 0;
+  font-size: 0.9rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* Add padding to the main content to prevent footer overlap */
+.landing, .dashboard-container {
+  padding-bottom: 4rem; /* Adjust this value based on your footer height */
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 0.75rem;
+  }
+  
+  .footer p {
+    font-size: 0.8rem;
+  }
+  
+  .landing, .dashboard-container {
+    padding-bottom: 3.5rem;
+  }
+}
+
 div.footer {
   background-color: black;
   width: 100%;
