@@ -233,65 +233,77 @@ const FetchTasks = () => {
     );
   }
 
-  const TaskCard = ({ task, onComplete, onDelete }) => (
-    <div
-      className={`task-card ${task.status ? "completed" : "incomplete"}`}
-      onClick={() =>
-        navigate(`/task/${task.taskName.replace(new RegExp("\\s+", "g"), "-")}`)
-      }
-    >
-      <div className="task-header">
-        <h3>{task.taskName}</h3>
-        <span className={`status-badge ${task.status ? "completed" : "incomplete"}`}>
-          {task.status ? "Completed" : "In Progress"}
-        </span>
-      </div>
+  const TaskCard = ({ task, onComplete, onDelete }) => {
+    const navigate = useNavigate();
+    
+    const handleTaskClick = () => {
+      // Create URL-friendly slug from task name
+      const formattedTaskName = task.taskName
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-"); // Replace spaces with hyphens
       
-      <p className="task-description">{task.description}</p>
-      
-      <div className="task-meta">
-        <span className="duration">
-          <FaClock /> {task.duration.value} {task.duration.unit}
-        </span>
-        <span className="created-at">
-          <FaCalendarAlt /> Created: {new Date(task.createdAt).toLocaleDateString()}
-        </span>
-      </div>
+      navigate(`/task/${formattedTaskName}`);
+    };
 
-      <div className="task-actions">
-        {task.status ? (
+    return (
+      <div
+        className={`task-card ${task.status ? "completed" : "incomplete"}`}
+        onClick={handleTaskClick}
+      >
+        <div className="task-header">
+          <h3>{task.taskName}</h3>
+          <span className={`status-badge ${task.status ? "completed" : "incomplete"}`}>
+            {task.status ? "Completed" : "In Progress"}
+          </span>
+        </div>
+        
+        <p className="task-description">{task.description}</p>
+        
+        <div className="task-meta">
+          <span className="duration">
+            <FaClock /> {task.duration.value} {task.duration.unit}
+          </span>
+          <span className="created-at">
+            <FaCalendarAlt /> Created: {new Date(task.createdAt).toLocaleDateString()}
+          </span>
+        </div>
+
+        <div className="task-actions">
+          {task.status ? (
+            <button
+              className="action-btn redo"
+              onClick={(e) => {
+                e.stopPropagation();
+                onComplete(task.id, true);
+              }}
+            >
+              <FaRedo /> Redo
+            </button>
+          ) : (
+            <button
+              className="action-btn complete"
+              onClick={(e) => {
+                e.stopPropagation();
+                onComplete(task.id, false);
+              }}
+            >
+              <FaCheckCircle /> Complete
+            </button>
+          )}
           <button
-            className="action-btn redo"
+            className="action-btn delete"
             onClick={(e) => {
               e.stopPropagation();
-              onComplete(task.id, true);
+              onDelete(task.id);
             }}
           >
-            <FaRedo /> Redo
+            <FaTrash /> Delete
           </button>
-        ) : (
-          <button
-            className="action-btn complete"
-            onClick={(e) => {
-              e.stopPropagation();
-              onComplete(task.id, false);
-            }}
-          >
-            <FaCheckCircle /> Complete
-          </button>
-        )}
-        <button
-          className="action-btn delete"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(task.id);
-          }}
-        >
-          <FaTrash /> Delete
-        </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="tasks-container">
