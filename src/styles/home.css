@@ -291,66 +291,53 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
+  border-radius: 12px;
   padding: 1.5rem;
-  border-radius: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-left: 4px solid;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: translateX(-100%);
-  animation: shimmer 3s infinite;
+  border: 2px solid;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:active {
+  transform: translateY(0);
+}
+
+.stat-card:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.2);
 }
 
 .stat-icon {
   font-size: 1.5rem;
   padding: 0.75rem;
-  border-radius: 0.75rem;
+  border-radius: 50%;
   background: rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-}
-
-.stat-card:hover .stat-icon {
-  transform: scale(1.1) rotate(5deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stat-content h3 {
-  font-size: 1.5rem;
-  color: #2c3e50;
   margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .stat-content p {
-  color: #64748b;
-  margin: 0;
-  font-size: 0.875rem;
+  margin: 0.25rem 0 0;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .features-grid {
