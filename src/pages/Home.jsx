@@ -160,25 +160,37 @@ export default function Home() {
     },
   ];
 
+  const handleStatClick = (view) => {
+    // Navigate to list-of-tasks with the selected view
+    navigate('/list-of-tasks', { 
+      state: { 
+        initialView: view 
+      }
+    });
+  };
+
   // Calculate stats from actual tasks
   const stats = [
     { 
       label: "Total Tasks", 
       value: tasks.length.toString(), 
       icon: <FaTasks />, 
-      color: "#4CAF50" 
+      color: "#4CAF50",
+      view: 'all'
     },
     { 
       label: "Completed", 
       value: tasks.filter(t => t.status).length.toString(), 
       icon: <FaCheckCircle />, 
-      color: "#2196F3" 
+      color: "#2196F3",
+      view: 'complete'
     },
     { 
       label: "Pending", 
       value: tasks.filter(t => !t.status).length.toString(), 
       icon: <FaClock />, 
-      color: "#FF9800" 
+      color: "#FF9800",
+      view: 'incomplete'
     },
   ];
 
@@ -275,7 +287,19 @@ export default function Home() {
 
       <div className="stats-grid">
         {stats.map((stat, index) => (
-          <div key={index} className="stat-card" style={{ borderColor: stat.color }}>
+          <div 
+            key={index} 
+            className="stat-card" 
+            style={{ borderColor: stat.color }}
+            onClick={() => handleStatClick(stat.view)}
+            role="button"
+            tabIndex={0}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleStatClick(stat.view);
+              }
+            }}
+          >
             <div className="stat-icon" style={{ color: stat.color }}>
               {stat.icon}
             </div>
