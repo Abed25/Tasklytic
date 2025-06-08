@@ -1,123 +1,284 @@
-.task-container {
-  max-width: 800px;
-  margin: 0 auto;
+.task-details-container {
+  max-width: 1000px;
+  margin: 2rem auto;
   padding: 2rem;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.form-title {
-  color: #2c3e50;
+.task-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
-  text-align: center;
-  font-size: 1.8rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
 }
 
-.task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-label {
-  color: #4a5568;
-  font-weight: 500;
+.back-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #f8f9fa;
+  border: none;
+  border-radius: 8px;
+  color: #2c3e50;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.input,
-.textarea {
+.back-button:hover {
+  background: #e9ecef;
+  transform: translateX(-2px);
+}
+
+.task-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-button.edit {
+  background: #009688;
+  color: white;
+}
+
+.action-button.edit:hover {
+  background: #00796b;
+}
+
+.action-button.delete {
+  background: #dc3545;
+  color: white;
+}
+
+.action-button.delete:hover {
+  background: #c82333;
+}
+
+.task-main-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.task-main-info h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.status-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.status-button.completed {
+  background: #28a745;
+  color: white;
+}
+
+.status-button.incomplete {
+  background: #ffc107;
+  color: #2c3e50;
+}
+
+.task-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.meta-item svg {
+  font-size: 1.5rem;
+  color: #009688;
+  margin-top: 0.25rem;
+}
+
+.meta-item label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.meta-item p {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.priority-high {
+  color: #dc3545;
+}
+
+.priority-medium {
+  color: #ffc107;
+}
+
+.priority-low {
+  color: #28a745;
+}
+
+.task-description-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.task-description-section h3 {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+}
+
+.task-description-section p {
+  color: #495057;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Edit mode styles */
+.edit-input,
+.edit-textarea {
+  width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 
-.input:focus,
-.textarea:focus {
+.edit-input:focus,
+.edit-textarea:focus {
   outline: none;
   border-color: #009688;
   box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1);
 }
 
-.textarea {
-  min-height: 120px;
+.edit-textarea {
+  min-height: 150px;
   resize: vertical;
 }
 
-.save-btn {
-  background: #009688;
-  color: white;
-  padding: 1rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-}
-
-.save-btn:hover {
-  background: #00796b;
-  transform: translateY(-1px);
-}
-
-.save-btn:active {
-  transform: translateY(0);
-}
-
-/* Priority colors */
-select option[value="high"] {
-  color: #e53e3e;
-}
-
-select option[value="medium"] {
-  color: #ed8936;
-}
-
-select option[value="low"] {
-  color: #38a169;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .task-container {
-    padding: 1rem;
-    margin: 1rem;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-.duration-input-group {
+.duration-edit {
   display: flex;
   gap: 0.5rem;
 }
 
-.duration-input {
+.duration-edit .edit-input:first-child {
   flex: 2;
 }
 
-.duration-unit {
+.duration-edit .edit-input:last-child {
   flex: 1;
-  min-width: 120px;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.save-button {
+  padding: 0.75rem 2rem;
+  background: #009688;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-button:hover {
+  background: #00796b;
+  transform: translateY(-1px);
+}
+
+/* Loading and error states */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #009688;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .task-details-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .task-main-info {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .task-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
 }

@@ -1,0 +1,217 @@
+.task-scheduler {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  overflow: hidden;
+}
+
+.scheduler-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.scheduler-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.25rem;
+}
+
+.scheduler-header svg {
+  color: #009688;
+}
+
+.save-schedule-btn {
+  background: #009688;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-schedule-btn:hover:not(:disabled) {
+  background: #00796b;
+  transform: translateY(-1px);
+}
+
+.save-schedule-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.scheduler-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.calendar-container {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* FullCalendar Customization */
+.fc {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.25rem;
+  color: #2c3e50;
+}
+
+.fc .fc-button {
+  background: #009688 !important;
+  border-color: #009688 !important;
+  color: white !important;
+}
+
+.fc .fc-button:hover {
+  background: #00796b !important;
+  border-color: #00796b !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: #00796b !important;
+  border-color: #00796b !important;
+}
+
+.fc .fc-button-primary:disabled {
+  background: #ccc !important;
+  border-color: #ccc !important;
+}
+
+.fc-event {
+  background: #009688;
+  border-color: #009688;
+}
+
+.fc-day-today {
+  background: rgba(0, 150, 136, 0.1) !important;
+}
+
+.fc-daygrid-day.fc-day-today {
+  background: rgba(0, 150, 136, 0.1) !important;
+}
+
+.fc-daygrid-day-number {
+  color: #2c3e50;
+}
+
+.fc-col-header-cell {
+  background: #f8f9fa;
+}
+
+.fc-col-header-cell-cushion {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background: #009688;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scheduler-options {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.option-group {
+  margin-bottom: 2rem;
+}
+
+.recurring-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.recurring-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.recurring-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.recurring-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2c3e50;
+}
+
+.recurring-select {
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: white;
+}
+
+.selected-date {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.selected-date h4 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+}
+
+.selected-date p {
+  margin: 0.5rem 0;
+  color: #4a5568;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .scheduler-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .scheduler-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .recurring-options {
+    padding: 0.75rem;
+  }
+} 
