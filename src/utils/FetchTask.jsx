@@ -226,7 +226,7 @@ const FetchTasks = () => {
         <div className="empty-state-icon">📝</div>
         <h3>No Tasks Yet</h3>
         <p>Start organizing your day by creating your first task!</p>
-        <button className="create-task-btn" onClick={() => navigate('/create-task')}>
+        <button className="create-task-btn" onClick={() => navigate('/add-tasks')}>
           Create Task
         </button>
       </div>
