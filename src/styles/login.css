@@ -1,53 +1,113 @@
-div.login {
-  width: 300px;
-  margin: auto;
-  margin-top: 40px;
-  border: gray 1px solid;
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  text-align: center;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-div.login h2 {
-  margin-bottom: 15px;
+.login h2 {
+  margin-bottom: 20px;
   color: #333;
 }
-div.login form {
+
+.login form {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: auto;
 }
-div.login input {
-  width: 90%;
+
+.login input {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-size: 16px;
 }
-div.login button {
+
+.login button {
   padding: 10px;
-  background: rgba(128, 222, 234, 0.8);
-  color: white;
+  background-color: #80deea;
+  color: #333;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin: 10px 2px;
+  transition: background-color 0.3s;
 }
-div.login button:hover {
-  background: rgba(128, 222, 234, 1);
+
+.login button:hover {
+  background-color: #4dd0e1;
 }
-div.login p {
-  margin-top: 10px;
-  font-size: 14px;
+
+.login p {
+  margin-top: 15px;
+  text-align: center;
 }
-div.login a {
-  color: rgba(128, 222, 234, 0.8);
+
+.login a {
+  color: #80deea;
   text-decoration: none;
 }
-div.login a:hover {
+
+.login a:hover {
   text-decoration: underline;
+}
+
+.divider {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.divider span {
+  background-color: white;
+  padding: 0 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+.google-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.google-btn svg {
+  color: #4285f4;
+  font-size: 18px;
 }

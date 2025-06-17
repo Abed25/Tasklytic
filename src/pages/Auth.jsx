@@ -2,24 +2,38 @@ import { useState } from "react";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { FaGoogle } from "react-icons/fa";
+import { useAuth } from "../context/AuthProvider";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const { loginWithGoogle } = useAuth();
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert("User created successfully!");
-      navigate("/login"); // Redirect to login after signup
+      toast.success("User created successfully!");
+      navigate("/login");
     } catch (error) {
-      alert(`Error signing up: ${error.message}`);
+      toast.error(`Error signing up: ${error.message}`);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      await loginWithGoogle();
+      toast.success("Google sign up successful!");
+      navigate("/home");
+    } catch (error) {
+      toast.error("Google sign up failed: " + error.message);
     }
   };
 
@@ -51,6 +65,16 @@ const SignUp = () => {
       />
       <button onClick={handleSignUp} style={{ width: "90%" }}>
         Sign Up
+      </button>
+      <div className="divider">
+        <span>OR</span>
+      </div>
+      <button 
+        onClick={handleGoogleSignUp} 
+        className="google-btn"
+        type="button"
+      >
+        <FaGoogle /> Sign up with Google
       </button>
       <p>
         Already have an account? <Link to="/login">Login</Link>

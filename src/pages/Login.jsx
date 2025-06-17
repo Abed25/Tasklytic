@@ -3,12 +3,13 @@ import { useAuth } from "../context/AuthProvider";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { FaGoogle } from "react-icons/fa";
 import "../styles/login.css";
 import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,6 +23,17 @@ const Login = () => {
       toast.error("Login failed: " + error.message);
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      toast.success("Google login successful!");
+      navigate("/home");
+    } catch (error) {
+      toast.error("Google login failed: " + error.message);
+    }
+  };
+
   const handleForgotPassword = async (email) => {
     const auth = getAuth();
     try {
@@ -53,6 +65,16 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
+      <div className="divider">
+        <span>OR</span>
+      </div>
+      <button 
+        onClick={handleGoogleSignIn} 
+        className="google-btn"
+        type="button"
+      >
+        <FaGoogle /> Sign in with Google
+      </button>
       <p>
         Forgot password?{" "}
         <Link onClick={() => handleForgotPassword(email)}>Reset password</Link>
