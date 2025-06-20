@@ -14,6 +14,7 @@ import ProtectedLayout from "./Layouts/protectedLayout";
 import Milestones from "./milestones/pages/Milestones";
 import MilestoneDay from "./milestones/pages/MilestoneDay"; // ✅ Import this
 import CalendarPage from "./pages/Calendar";
+import Profile from "./pages/Profile";
 
 function Layout() {
   return (
@@ -38,6 +39,7 @@ function Layout() {
             <Route path="/home" element={<Home />} />
             <Route path="/add-tasks" element={<TaskForm />} />
             <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/list-of-tasks" element={<FetchTasks />} />
             <Route path="/task/:taskName" element={<TaskDetails />} />
             <Route path="/milestones" element={<Milestones />} />
