@@ -1,0 +1,141 @@
+/* General Calendar Container */
+.calendar-container {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.calendar-header {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #80DEEA 0%, #4DD0E1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.calendar-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* React-Calendar Overrides */
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.react-calendar__tile {
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.react-calendar__tile--now {
+  background: #E0F7FA;
+  color: #00796B;
+}
+
+.react-calendar__tile--active {
+  background: #00796B !important;
+  color: white !important;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background: #B2DFDB;
+}
+
+/* Task Indicator Dot */
+.task-indicator {
+  height: 8px;
+  width: 8px;
+  background-color: #FF9800;
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-top: 4px;
+}
+
+/* Task List Below Calendar */
+.task-list {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.task-list-header {
+  font-size: 1.5rem;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.task-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-item:hover {
+  background-color: #f8fafc;
+}
+
+.task-name {
+  font-weight: 500;
+  color: #334155;
+}
+
+.task-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.task-status.completed {
+  background-color: #E8F5E9;
+  color: #4CAF50;
+}
+
+.task-status.pending {
+  background-color: #FFF3E0;
+  color: #FF9800;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 1rem;
+  }
+
+  .calendar-header {
+    font-size: 2rem;
+  }
+
+  .calendar-wrapper, .task-list {
+    padding: 1.5rem;
+  }
+} 
