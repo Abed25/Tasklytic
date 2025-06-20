@@ -1,86 +1,128 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useAuth } from "../context/AuthProvider";
-import { 
-  FaPlus, 
-  FaClipboardList, 
-  FaTasks, 
-  FaBullseye, 
-  FaChartLine, 
-  FaCheckCircle, 
+import {
+  FaClipboardList,
+  FaTasks,
+  FaBullseye,
+  FaChartLine,
+  FaCheckCircle,
   FaClock,
   FaFire,
   FaLightbulb,
   FaBrain,
   FaRegClock,
-  FaHome,
-  FaCalendarAlt,
-  FaUser,
-  FaCog
 } from "react-icons/fa";
-import "../styles/home.css";
-import MonthlyCountdown from "../component/MonthlyCountdown";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  AreaChart,
-  Area
-} from "recharts";
+import { motion } from "framer-motion";
+import { AreaChart, Area, PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import Sidebar from "../component/Sidebar";
+import MonthlyCountdown from "../component/MonthlyCountdown";
+import "../styles/home.css";
 
 export default function Home() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [productivityScore, setProductivityScore] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [focusTime, setFocusTime] = useState(0);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
 
-  // Fetch tasks from Firestore
+  // Stats State
+  const [stats, setStats] = useState({
+    completed: 0,
+    pending: 0,
+    total: 0,
+    productivity: 0,
+    streak: 0,
+    focusTime: 0,
+  });
+
+  // Chart and Recommendations Data State
+  const [chartData, setChartData] = useState([]);
+  const [pieData, setPieData] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
+
   useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchTasks = async () => {
-      if (!user) return;
       try {
-        const querySnapshot = await getDocs(collection(db, "tasks"));
-        const tasksData = querySnapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .filter((task) => task.userId === user.uid);
+        const q = query(collection(db, "tasks"), where("userId", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+        const tasksData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate(),
+        }));
         setTasks(tasksData);
+
+        // --- Process Data for Stats and Charts ---
+        const completed = tasksData.filter((t) => t.status).length;
+        const total = tasksData.length;
+        const pending = total - completed;
+        const productivity = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const focusTime = tasksData.reduce((acc, task) => acc + (task.duration || 0), 0);
+
+        // Streak Calculation
+        const completedDates = new Set(
+          tasksData
+            .filter((t) => t.status)
+            .map((t) => t.createdAt?.toLocaleDateString())
+        );
+        let currentStreak = 0;
+        let today = new Date();
+        while (completedDates.has(today.toLocaleDateString())) {
+            currentStreak++;
+            today.setDate(today.getDate() - 1);
+        }
         
-        // Calculate productivity metrics
-        const completedTasks = tasksData.filter(task => task.status).length;
-        const totalTasks = tasksData.length;
-        const productivityScore = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-        setProductivityScore(productivityScore);
-
-        // Calculate focus time (sum of all task durations)
-        const totalFocusTime = tasksData.reduce((acc, task) => acc + (task.duration || 0), 0);
-        setFocusTime(totalFocusTime);
-
-        // Calculate streak (simplified version - can be enhanced)
-        const today = new Date();
-        const lastWeekTasks = tasksData.filter(task => {
-          const taskDate = new Date(task.createdAt);
-          return (today - taskDate) <= 7 * 24 * 60 * 60 * 1000;
+        setStats({
+          completed,
+          pending,
+          total,
+          productivity,
+          streak: currentStreak,
+          focusTime
         });
-        setStreak(lastWeekTasks.length > 0 ? 1 : 0);
+
+        // Process data for Area chart
+        const last7Days = Array.from({ length: 7 }, (_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          return d.toLocaleDateString("en-US", { weekday: "short" });
+        }).reverse();
+
+        const dataForChart = last7Days.map((day) => {
+          const dayTasks = tasksData.filter(
+            (t) => t.createdAt?.toLocaleDateString("en-US", { weekday: "short" }) === day && t.status
+          );
+          return { name: day, tasks: dayTasks.length };
+        });
+        setChartData(dataForChart);
+        
+        // Process data for Pie chart
+        setPieData([
+            { name: "Completed", value: completed },
+            { name: "Pending", value: pending },
+        ]);
+
+        // Process Smart Recommendations
+        const recs = [];
+        if (pending > 0) {
+            const oldestTask = tasksData.filter(t => !t.status).sort((a,b) => a.createdAt - b.createdAt)[0];
+            recs.push({ title: "Tackle this next!", description: `Your oldest pending task is "${oldestTask.taskName}"`, icon: <FaRegClock/> });
+        }
+        if (productivity < 50 && total > 5) {
+            recs.push({ title: "Boost Your Score", description: "Complete a few tasks to increase your productivity.", icon: <FaChartLine/> });
+        }
+        if (completed > 0) {
+            recs.push({ title: "Great work!", description: `You've completed ${completed} tasks. Keep it up!`, icon: <FaLightbulb/> });
+        }
+        setRecommendations(recs.slice(0, 3));
+
 
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -91,349 +133,150 @@ export default function Home() {
 
     fetchTasks();
   }, [user]);
-
-  // Mobile navigation items
-  const navItems = [
-    { icon: <FaHome />, label: "Home", path: "/" },
-    { icon: <FaCalendarAlt />, label: "Calendar", path: "/calendar" },
-    { icon: <FaUser />, label: "Profile", path: "/profile" },
-    { icon: <FaCog />, label: "Settings", path: "/settings" }
-  ];
-
-  // Handle pull to refresh
-  const handleTouchStart = (e) => {
-    setTouchStart(e.targetTouches[0].clientY);
+  
+  // Animation Variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+      },
+    }),
   };
+  
+  const PIE_COLORS = ["#10b981", "#f59e0b"];
 
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientY);
-    if (touchStart - touchEnd > 100) {
-      setIsRefreshing(true);
-      // Refresh data
-      fetchTasks();
-      setTimeout(() => {
-        setIsRefreshing(false);
-      }, 1500);
-    }
-  };
-
-  // Generate productivity trend data from actual tasks
-  const generateProductivityData = () => {
-    const last7Days = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      return date.toLocaleDateString('en-US', { weekday: 'short' });
-    }).reverse();
-
-    return last7Days.map(day => {
-      const dayTasks = tasks.filter(task => {
-        const taskDate = new Date(task.createdAt);
-        return taskDate.toLocaleDateString('en-US', { weekday: 'short' }) === day;
-      });
-      const completedTasks = dayTasks.filter(task => task.status).length;
-      const totalTasks = dayTasks.length;
-      const score = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-      return { day, score };
-    });
-  };
-
-  const features = [
-    {
-      title: "Task Management",
-      icon: <FaClipboardList size={24} />,
-      onClick: () => navigate("/list-of-tasks"),
-      tooltip: "View and manage your tasks",
-      color: "#4CAF50"
-    },
-    {
-      title: "Milestones",
-      icon: <FaBullseye size={24} />,
-      onClick: () => navigate("/milestones"),
-      tooltip: "Track your achievements",
-      color: "#2196F3"
-    },
-    {
-      title: "Analytics",
-      icon: <FaChartLine size={24} />,
-      onClick: () => navigate("/analytics"),
-      tooltip: "View detailed analytics",
-      color: "#9C27B0"
-    },
-  ];
-
-  const handleStatClick = (view) => {
-    // Navigate to list-of-tasks with the selected view
-    navigate('/list-of-tasks', { 
-      state: { 
-        initialView: view 
-      }
-    });
-  };
-
-  // Calculate stats from actual tasks
-  const stats = [
-    { 
-      label: "Total Tasks", 
-      value: tasks.length.toString(), 
-      icon: <FaTasks />, 
-      color: "#4CAF50",
-      view: 'all'
-    },
-    { 
-      label: "Completed", 
-      value: tasks.filter(t => t.status).length.toString(), 
-      icon: <FaCheckCircle />, 
-      color: "#2196F3",
-      view: 'complete'
-    },
-    { 
-      label: "Pending", 
-      value: tasks.filter(t => !t.status).length.toString(), 
-      icon: <FaClock />, 
-      color: "#FF9800",
-      view: 'incomplete'
-    },
-  ];
-
-  // Generate smart recommendations based on actual tasks
-  const generateSmartRecommendations = () => {
-    const incompleteTasks = tasks.filter(task => !task.status);
-    const recommendations = [];
-
-    if (incompleteTasks.length > 0) {
-      const oldestTask = incompleteTasks.sort((a, b) => a.createdAt - b.createdAt)[0];
-      recommendations.push({
-        title: "Complete Pending Task",
-        description: `Don't forget to complete "${oldestTask.taskName}"`,
-        icon: <FaRegClock />,
-        priority: "high"
-      });
-    }
-
-    if (tasks.length > 0) {
-      recommendations.push({
-        title: "Task Review",
-        description: `You have ${incompleteTasks.length} tasks pending completion`,
-        icon: <FaBrain />,
-        priority: "medium"
-      });
-    }
-
-    if (tasks.filter(t => t.status).length > 0) {
-      recommendations.push({
-        title: "Progress Check",
-        description: `You've completed ${tasks.filter(t => t.status).length} tasks so far`,
-        icon: <FaLightbulb />,
-        priority: "low"
-      });
-    }
-
-    return recommendations;
-  };
-
-  const pieData = [
-    { name: "Completed", value: tasks.filter(t => t.status).length },
-    { name: "Pending", value: tasks.filter(t => !t.status).length },
-  ];
-
-  const COLORS = ["#4CAF50", "#FF9800"];
 
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading your dashboard...</p>
-      </div>
-    );
+    return <div className="loading-screen"><div></div></div>; // Replace with a better loading spinner later
   }
 
   return (
     <div className="home-container">
       <Sidebar />
-      <div 
-        className="dashboard-container"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-      >
-        <div className="floating-shape"></div>
-        <div className="floating-shape"></div>
-        {isRefreshing && (
-          <div className="pull-to-refresh active">
-            Refreshing...
-          </div>
-        )}
-
-        <div className="dashboard-header">
+      <main className="dashboard-container">
+        <header className="dashboard-header">
           <div className="welcome-section">
-            <h1>Welcome Back!</h1>
-            <p>Track your progress and stay productive</p>
+            <h1>Welcome Back, {user?.displayName || "User"}!</h1>
+            <p>Here's your productivity snapshot for today.</p>
           </div>
           <MonthlyCountdown />
-        </div>
+        </header>
 
-        <div className="productivity-overview">
-          <div className="productivity-score">
-            <div className="score-circle">
-              <span>{productivityScore}</span>
-              <small>Productivity Score</small>
-            </div>
-          </div>
-          <div className="streak-info">
-            <FaFire className="streak-icon" />
-            <span>{streak} Day Streak</span>
-          </div>
-          <div className="focus-time">
-            <FaRegClock className="focus-icon" />
-            <span>{focusTime} min Focus Time</span>
-          </div>
-        </div>
-
-        <div className="stats-grid">
-          {stats.map((stat, index) => (
-            <div 
-              key={index} 
-              className="stat-card" 
-              style={{ borderColor: stat.color }}
-              onClick={() => handleStatClick(stat.view)}
-              role="button"
-              tabIndex={0}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleStatClick(stat.view);
-                }
-              }}
-            >
-              <div className="stat-icon" style={{ color: stat.color }}>
-                {stat.icon}
-              </div>
-              <div className="stat-content">
-                <h3>{stat.value}</h3>
-                <p>{stat.label}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="features-grid">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="feature-card"
-              onClick={feature.onClick}
-              title={feature.tooltip}
-              style={{ borderColor: feature.color }}
-            >
-              <div className="feature-icon" style={{ color: feature.color }}>
-                {feature.icon}
-              </div>
-              <h3>{feature.title}</h3>
-            </div>
-          ))}
-        </div>
-
-        <div className="dashboard-content">
-          <div className="charts-section">
-            <div className="chart-card">
-              <h3>Productivity Trend</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <AreaChart data={generateProductivityData()}>
-                  <defs>
-                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#4CAF50" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#4CAF50" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="day" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="score" stroke="#4CAF50" fillOpacity={1} fill="url(#colorScore)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="chart-card">
-              <h3>Task Completion</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    dataKey="value"
-                    nameKey="name"
-                    outerRadius={80}
-                    innerRadius={60}
-                    fill="#8884d8"
-                    label
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Legend />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="smart-recommendations">
-            <h3>Smart Recommendations</h3>
-            <div className="recommendations-list">
-              {generateSmartRecommendations().map((rec, index) => (
-                <div key={index} className={`recommendation-card ${rec.priority}`}>
-                  <div className="recommendation-icon">
-                    {rec.icon}
-                  </div>
-                  <div className="recommendation-content">
-                    <h4>{rec.title}</h4>
-                    <p>{rec.description}</p>
-                  </div>
+        <div className="dashboard-grid">
+          <motion.div className="grid-card hero-widget" custom={0} variants={cardVariants} initial="hidden" animate="visible">
+            <div className="productivity-score">
+              <div className="score-circle">
+                <div className="score-circle-content">
+                  <span>{stats.productivity}</span><small>%</small>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="recent-activity">
-          <h3>Recent Activity</h3>
-          <div className="activity-list">
-            {tasks.slice(0, 3).map((task, index) => (
-              <div key={index} className="activity-item">
-                <span className="activity-icon">{task.status ? "✔️" : "🕒"}</span>
-                <span className="activity-text">
-                  {task.status ? "Completed" : "Updated"}: {task.taskName}
-                </span>
-                <span className="activity-time">
-                  {new Date(task.createdAt).toLocaleDateString()}
-                </span>
               </div>
-            ))}
-          </div>
-        </div>
+              <h3>Productivity</h3>
+            </div>
+            <div className="streak-info">
+              <div className="streak-icon"><FaFire /></div>
+              <span>{stats.streak} Day Streak</span>
+            </div>
+          </motion.div>
+          
+          <motion.div className="grid-card quick-actions" custom={1} variants={cardVariants} initial="hidden" animate="visible">
+             <h3 className="widget-title">Quick Actions</h3>
+             <div className="features-grid">
+                <div className="feature-card" onClick={() => navigate('/list-of-tasks')}><div className="feature-icon" style={{color: '#3b82f6'}}><FaTasks /></div><span>All Tasks</span></div>
+                <div className="feature-card" onClick={() => navigate('/milestones')}><div className="feature-icon" style={{color: '#8b5cf6'}}><FaBullseye /></div><span>Milestones</span></div>
+                <div className="feature-card" onClick={() => navigate('/analytics')}><div className="feature-icon" style={{color: '#ef4444'}}><FaChartLine /></div><span>Analytics</span></div>
+                <div className="feature-card" onClick={() => navigate('/add-tasks')}><div className="feature-icon" style={{color: '#10b981'}}><FaClipboardList /></div><span>Add Task</span></div>
+             </div>
+          </motion.div>
 
-        <div className="motivation-quote">
-          <blockquote>
-            "Productivity is never an accident. It is always the result of a commitment to excellence."
-          </blockquote>
-        </div>
+          <motion.div className="grid-card stats-widget" custom={2} variants={cardVariants} initial="hidden" animate="visible">
+            <h3 className="widget-title">Your Statistics</h3>
+            <div className="stats-grid">
+              <div className="stat-card"><div className="stat-icon" style={{color: '#3b82f6', background: 'rgba(59, 130, 246, 0.1)'}}><FaTasks /></div><div><h4>{stats.total}</h4><p>Total Tasks</p></div></div>
+              <div className="stat-card"><div className="stat-icon" style={{color: '#10b981', background: 'rgba(16, 185, 129, 0.1)'}}><FaCheckCircle /></div><div><h4>{stats.completed}</h4><p>Completed</p></div></div>
+              <div className="stat-card"><div className="stat-icon" style={{color: '#f59e0b', background: 'rgba(245, 158, 11, 0.1)'}}><FaClock /></div><div><h4>{stats.pending}</h4><p>Pending</p></div></div>
+              <div className="stat-card"><div className="stat-icon" style={{color: '#6366f1', background: 'rgba(99, 102, 241, 0.1)'}}><FaRegClock /></div><div><h4>{stats.focusTime}</h4><p>Focus (min)</p></div></div>
+            </div>
+          </motion.div>
 
-        {/* Mobile Navigation */}
-        <nav className="mobile-nav">
-          {navItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.path}
-              className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
-              onClick={(e) => {
-                e.preventDefault();
-                navigate(item.path);
-              }}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              <span>{item.label}</span>
-            </a>
-          ))}
-        </nav>
-      </div>
+          <motion.div className="grid-card charts-widget" custom={3} variants={cardVariants} initial="hidden" animate="visible">
+             <h3 className="widget-title">Productivity Trend</h3>
+             <div style={{height: '200px'}}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
+                        <Tooltip contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(5px)', border: 'none', borderRadius: '1rem' }} />
+                        <Area type="monotone" dataKey="tasks" stroke="#4DD0E1" strokeWidth={2} fillOpacity={0.4} fill="url(#colorUv)" />
+                    </AreaChart>
+                </ResponsiveContainer>
+             </div>
+          </motion.div>
+          
+          <motion.div className="grid-card pie-chart-widget" custom={4} variants={cardVariants} initial="hidden" animate="visible">
+              <h3 className="widget-title">Task Breakdown</h3>
+              <div style={{height: '200px'}}>
+                  <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                          <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} innerRadius={50} labelLine={false}>
+                              {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />)}
+                          </Pie>
+                          <Tooltip />
+                      </PieChart>
+                  </ResponsiveContainer>
+              </div>
+          </motion.div>
+
+          <motion.div className="grid-card recommendations-widget" custom={5} variants={cardVariants} initial="hidden" animate="visible">
+              <h3 className="widget-title">Smart Suggestions</h3>
+              <div className="recommendations-list">
+                  {recommendations.map((rec, i) => (
+                      <div className="recommendation-card" key={i}>
+                          <div className="recommendation-icon">{rec.icon}</div>
+                          <div>
+                              <h4>{rec.title}</h4>
+                              <p>{rec.description}</p>
+                          </div>
+                      </div>
+                  ))}
+              </div>
+          </motion.div>
+          
+          <motion.div className="grid-card recent-activity-widget" custom={6} variants={cardVariants} initial="hidden" animate="visible">
+              <h3 className="widget-title">Recent Activity</h3>
+              <div className="activity-list">
+                  {tasks.slice(0, 3).map(task => (
+                      <div className="activity-item" key={task.id}>
+                          <span>{task.status ? "✅" : "🕒"}</span>
+                          <p>{task.taskName}</p>
+                          <small>{task.createdAt?.toLocaleDateString()}</small>
+                      </div>
+                  ))}
+              </div>
+          </motion.div>
+          
+          <motion.div className="grid-card upcoming-deadlines-widget" custom={7} variants={cardVariants} initial="hidden" animate="visible">
+              <h3 className="widget-title">Upcoming Deadlines</h3>
+              <div className="deadlines-list">
+                  {tasks
+                      .filter(task => task.dueDate && new Date(task.dueDate) > new Date())
+                      .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+                      .slice(0, 3)
+                      .map(task => (
+                          <div className="deadline-item" key={task.id}>
+                              <div className="deadline-info">
+                                  <h4>{task.taskName}</h4>
+                                  <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
+                              </div>
+                              <div className={`priority-indicator ${task.priority}`}></div>
+                          </div>
+                      ))}
+              </div>
+          </motion.div>
+
+        </div>
+      </main>
     </div>
   );
 }

@@ -8,14 +8,18 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaSignOutAlt,
+  FaSun,
+  FaMoon,
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthProvider';
+import { useTheme } from '../context/ThemeContext';
 import '../styles/sidebar.css';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -56,6 +60,18 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
+        <div className="theme-switcher">
+            <span className="nav-icon">{theme === 'light' ? <FaSun /> : <FaMoon />}</span>
+            <span className="nav-text">
+                <div className="switch-container">
+                    <span>{theme === 'light' ? 'Light Mode' : 'Dark Mode'}</span>
+                    <label className="switch">
+                        <input type="checkbox" onChange={toggleTheme} checked={theme === 'dark'} />
+                        <span className="slider round"></span>
+                    </label>
+                </div>
+            </span>
+        </div>
         <button className="logout-btn" onClick={handleLogout}>
           <span className="nav-icon">
             <FaSignOutAlt />
