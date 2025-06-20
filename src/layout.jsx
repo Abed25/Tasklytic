@@ -15,6 +15,7 @@ import Milestones from "./milestones/pages/Milestones";
 import MilestoneDay from "./milestones/pages/MilestoneDay"; // ✅ Import this
 import CalendarPage from "./pages/Calendar";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 function Layout() {
   return (
@@ -40,6 +41,7 @@ function Layout() {
             <Route path="/add-tasks" element={<TaskForm />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/list-of-tasks" element={<FetchTasks />} />
             <Route path="/task/:taskName" element={<TaskDetails />} />
             <Route path="/milestones" element={<Milestones />} />
