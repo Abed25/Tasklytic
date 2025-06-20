@@ -6,7 +6,7 @@ function Footer() {
     <div className="footer">
       <p>
         {" "}
-        &copy; {new Date().getFullYear()} superDev | Todo | All rights reserved.
+        &copy; {new Date().getFullYear()} superDev | Tasklytic | All rights reserved.
       </p>
     </div>
   );

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'todo-app-v1';
+const CACHE_NAME = 'tasklytic-v1';
 const urlsToCache = [
   '/',
   '/index.html',

@@ -12,20 +12,22 @@ const MonthlyCountdown = () => {
   useEffect(() => {
     const getOrSetEndOfMonth = () => {
       const now = new Date();
-      const year =
-        now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-      const month = now.getMonth() === 11 ? 0 : now.getMonth() + 1;
-
-      const nextMonthDate = new Date(year, month, 1);
+      const currentMonthLabel = now.toLocaleString("default", { month: "long" });
+      let nextMonth, nextYear;
+      if (now.getMonth() === 11) { // December
+        nextMonth = 0;
+        nextYear = now.getFullYear() + 1;
+      } else {
+        nextMonth = now.getMonth() + 1;
+        nextYear = now.getFullYear();
+      }
+      const nextMonthDate = new Date(nextYear, nextMonth, 1);
       const end = new Date(nextMonthDate);
       end.setSeconds(end.getSeconds() - 1);
-
+      const nextMonthLabel = nextMonthDate.toLocaleString("default", { month: "long" });
       setNextMonthLabel(
-        `${nextMonthDate.toLocaleString("default", {
-          month: "long",
-        })}, ${nextMonthDate.getFullYear()}`
+        `To ${nextMonthLabel} ${nextMonthDate.getFullYear()}`
       );
-
       localStorage.setItem("endOfMonth", end.toISOString());
       return end;
     };
@@ -38,10 +40,19 @@ const MonthlyCountdown = () => {
       const storedDate = new Date(stored);
       if (storedDate > now) {
         endOfMonth = storedDate;
+        const currentMonthLabel = now.toLocaleString("default", { month: "long" });
+        let nextMonth, nextYear;
+        if (now.getMonth() === 11) {
+          nextMonth = 0;
+          nextYear = now.getFullYear() + 1;
+        } else {
+          nextMonth = now.getMonth() + 1;
+          nextYear = now.getFullYear();
+        }
+        const nextMonthDate = new Date(nextYear, nextMonth, 1);
+        const nextMonthLabel = nextMonthDate.toLocaleString("default", { month: "long" });
         setNextMonthLabel(
-          `${storedDate.toLocaleString("default", {
-            month: "long",
-          })}, ${storedDate.getFullYear()}`
+          `To ${nextMonthLabel} ${nextMonthDate.getFullYear()}`
         );
       } else {
         endOfMonth = getOrSetEndOfMonth();
@@ -76,22 +87,16 @@ const MonthlyCountdown = () => {
   const pad = (num) => String(num).padStart(2, "0");
 
   return (
-    <div style={{ textAlign: "center", fontFamily: "sans-serif" }}>
-      <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
+    <div className="monthly-countdown digital-countdown">
+      <div className="countdown-row">
         {["days", "hours", "minutes", "seconds"].map((unit) => (
-          <div key={unit}>
-            <div style={{ fontSize: "20px", fontWeight: "bold" }}>
-              {pad(timeLeft[unit])}
-            </div>
-            <div style={{ fontSize: "0.9rem", marginTop: "4px" }}>
-              {unit.charAt(0).toUpperCase() + unit.slice(1)}
-            </div>{" "}
+          <div className="countdown-unit" key={unit}>
+            <div className="countdown-value">{pad(timeLeft[unit])}</div>
+            <div className="countdown-label">{unit.charAt(0).toUpperCase() + unit.slice(1)}</div>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: "12px", fontSize: "1rem", color: "#555" }}>
-        {nextMonthLabel}
-      </div>
+      <div className="countdown-footer">{nextMonthLabel}</div>
     </div>
   );
 };

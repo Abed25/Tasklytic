@@ -1,6 +1,6 @@
-# ✅ Todo App – React + Firebase (Now a PWA 🚀)
+# ✅ Tasklytic – React + Firebase (Now a PWA 🚀)
 
-A simple yet powerful **Todo App** built with **React** and **Firebase**, now installable as a **Progressive Web App (PWA)**. Designed to help users organize their tasks, track progress and boost productivity on the go.
+A simple yet powerful **Tasklytic** app built with **React** and **Firebase**, now installable as a **Progressive Web App (PWA)**. Designed to help users organize their tasks, track progress and boost productivity on the go.
 
 ## 🔗 Live App
 
@@ -33,7 +33,7 @@ A simple yet powerful **Todo App** built with **React** and **Firebase**, now in
 ## 🚀 Getting Started (Local Development)
 
 ```bash
-git clone https://github.com/Abed25/todo-app.git
+git clone https://github.com/Abed25/tasklytic.git
 cd client
 npm install
 npm run dev

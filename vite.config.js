@@ -10,7 +10,7 @@ export default defineConfig({
       includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
       manifest: {
         name: "To-Do App",
-        short_name: "ToDo",
+        short_name: "Tasklytic",
         description: "Track your tasks effortlessly",
         start_url: "/",
         display: "standalone",

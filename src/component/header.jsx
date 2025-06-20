@@ -35,37 +35,21 @@ export default function Header() {
     }
   };
 
-  const iconStyles = {
-    marginRight: "8px",
-    position: "absolute",
-    top: "4px",
-    fontSize: "26px",
-    cursor: "pointer",
-  };
-
   return (
     <div className="header">
-      <h2 onClick={() => navigate("/")}>Todo App</h2>
+      <h2 onClick={() => navigate("/")}>Tasklytic</h2>
 
       {user && (
-        <>
+        <div className="header-icons">
           <FaUserCircle
             title="Profile"
-            style={{
-              ...iconStyles,
-              right: "65px",
-            }}
+            onClick={() => navigate("/profile")}
           />
-
           <FaSignOutAlt
             title="Logout"
             onClick={confirmLogout}
-            style={{
-              ...iconStyles,
-              right: "10px",
-            }}
           />
-        </>
+        </div>
       )}
     </div>
   );

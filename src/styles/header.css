@@ -1,5 +1,58 @@
-.header > h2 {
+.header {
+  width: 100vw;
+  left: 0;
+  right: 0;
+  background: #fff;
+  color: #232b39;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem 1.2rem 2rem;
+  box-shadow: 0 2px 16px 0 #00c6ff11;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow-x: hidden;
+}
+
+.header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
   cursor: pointer;
+  color: inherit;
+}
+
+.header svg {
+  color: #0072ff;
+  background: none;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
+}
+
+.header svg:hover {
+  color: #00c6ff;
+  background: #e0f7fa;
+}
+
+[data-theme='dark'] .header {
+  background: #181f2a;
+  color: #e0f7fa;
+  box-shadow: 0 2px 16px 0 #232b3933;
+}
+
+[data-theme='dark'] .header h2 {
+  color: #e0f7fa;
+}
+
+[data-theme='dark'] .header svg {
+  color: #4dd0e1;
+}
+
+[data-theme='dark'] .header svg:hover {
+  color: #fff;
+  background: #232b39;
 }
 
 .swal2-styled.swal2-confirm {
@@ -19,5 +72,35 @@ body.swal2-shown:not(.swal2-no-backdrop) {
 @media (max-width: 768px) {
   .header {
     padding: 1rem;
+  }
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-left: auto;
+}
+
+.header-icons svg {
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #0072ff;
+  background: none;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
+}
+
+.header-icons svg:hover {
+  color: #00c6ff;
+  background: #e0f7fa;
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 1rem 0.7rem 1rem 1rem;
+  }
+  .header-icons {
+    gap: 0.7rem;
   }
 }
