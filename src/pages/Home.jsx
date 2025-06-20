@@ -38,6 +38,7 @@ import {
   AreaChart,
   Area
 } from "recharts";
+import Sidebar from "../component/Sidebar";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -247,189 +248,192 @@ export default function Home() {
   }
 
   return (
-    <div 
-      className="dashboard-container"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-    >
-      <div className="floating-shape"></div>
-      <div className="floating-shape"></div>
-      {isRefreshing && (
-        <div className="pull-to-refresh active">
-          Refreshing...
-        </div>
-      )}
-
-      <div className="dashboard-header">
-        <div className="welcome-section">
-          <h1>Welcome Back!</h1>
-          <p>Track your progress and stay productive</p>
-        </div>
-        <MonthlyCountdown />
-      </div>
-
-      <div className="productivity-overview">
-        <div className="productivity-score">
-          <div className="score-circle">
-            <span>{productivityScore}</span>
-            <small>Productivity Score</small>
+    <div className="home-container">
+      <Sidebar />
+      <div 
+        className="dashboard-container"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+      >
+        <div className="floating-shape"></div>
+        <div className="floating-shape"></div>
+        {isRefreshing && (
+          <div className="pull-to-refresh active">
+            Refreshing...
           </div>
-        </div>
-        <div className="streak-info">
-          <FaFire className="streak-icon" />
-          <span>{streak} Day Streak</span>
-        </div>
-        <div className="focus-time">
-          <FaRegClock className="focus-icon" />
-          <span>{focusTime} min Focus Time</span>
-        </div>
-      </div>
+        )}
 
-      <div className="stats-grid">
-        {stats.map((stat, index) => (
-          <div 
-            key={index} 
-            className="stat-card" 
-            style={{ borderColor: stat.color }}
-            onClick={() => handleStatClick(stat.view)}
-            role="button"
-            tabIndex={0}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleStatClick(stat.view);
-              }
-            }}
-          >
-            <div className="stat-icon" style={{ color: stat.color }}>
-              {stat.icon}
-            </div>
-            <div className="stat-content">
-              <h3>{stat.value}</h3>
-              <p>{stat.label}</p>
+        <div className="dashboard-header">
+          <div className="welcome-section">
+            <h1>Welcome Back!</h1>
+            <p>Track your progress and stay productive</p>
+          </div>
+          <MonthlyCountdown />
+        </div>
+
+        <div className="productivity-overview">
+          <div className="productivity-score">
+            <div className="score-circle">
+              <span>{productivityScore}</span>
+              <small>Productivity Score</small>
             </div>
           </div>
-        ))}
-      </div>
-
-      <div className="features-grid">
-        {features.map((feature, index) => (
-          <div
-            key={index}
-            className="feature-card"
-            onClick={feature.onClick}
-            title={feature.tooltip}
-            style={{ borderColor: feature.color }}
-          >
-            <div className="feature-icon" style={{ color: feature.color }}>
-              {feature.icon}
-            </div>
-            <h3>{feature.title}</h3>
+          <div className="streak-info">
+            <FaFire className="streak-icon" />
+            <span>{streak} Day Streak</span>
           </div>
-        ))}
-      </div>
-
-      <div className="dashboard-content">
-        <div className="charts-section">
-          <div className="chart-card">
-            <h3>Productivity Trend</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={generateProductivityData()}>
-                <defs>
-                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#4CAF50" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#4CAF50" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="day" />
-                <YAxis domain={[0, 100]} />
-                <Tooltip />
-                <Area type="monotone" dataKey="score" stroke="#4CAF50" fillOpacity={1} fill="url(#colorScore)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-card">
-            <h3>Task Completion</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={80}
-                  innerRadius={60}
-                  fill="#8884d8"
-                  label
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Legend />
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="focus-time">
+            <FaRegClock className="focus-icon" />
+            <span>{focusTime} min Focus Time</span>
           </div>
         </div>
 
-        <div className="smart-recommendations">
-          <h3>Smart Recommendations</h3>
-          <div className="recommendations-list">
-            {generateSmartRecommendations().map((rec, index) => (
-              <div key={index} className={`recommendation-card ${rec.priority}`}>
-                <div className="recommendation-icon">
-                  {rec.icon}
+        <div className="stats-grid">
+          {stats.map((stat, index) => (
+            <div 
+              key={index} 
+              className="stat-card" 
+              style={{ borderColor: stat.color }}
+              onClick={() => handleStatClick(stat.view)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleStatClick(stat.view);
+                }
+              }}
+            >
+              <div className="stat-icon" style={{ color: stat.color }}>
+                {stat.icon}
+              </div>
+              <div className="stat-content">
+                <h3>{stat.value}</h3>
+                <p>{stat.label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="features-grid">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="feature-card"
+              onClick={feature.onClick}
+              title={feature.tooltip}
+              style={{ borderColor: feature.color }}
+            >
+              <div className="feature-icon" style={{ color: feature.color }}>
+                {feature.icon}
+              </div>
+              <h3>{feature.title}</h3>
+            </div>
+          ))}
+        </div>
+
+        <div className="dashboard-content">
+          <div className="charts-section">
+            <div className="chart-card">
+              <h3>Productivity Trend</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <AreaChart data={generateProductivityData()}>
+                  <defs>
+                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#4CAF50" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#4CAF50" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="day" />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="score" stroke="#4CAF50" fillOpacity={1} fill="url(#colorScore)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="chart-card">
+              <h3>Task Completion</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={80}
+                    innerRadius={60}
+                    fill="#8884d8"
+                    label
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="smart-recommendations">
+            <h3>Smart Recommendations</h3>
+            <div className="recommendations-list">
+              {generateSmartRecommendations().map((rec, index) => (
+                <div key={index} className={`recommendation-card ${rec.priority}`}>
+                  <div className="recommendation-icon">
+                    {rec.icon}
+                  </div>
+                  <div className="recommendation-content">
+                    <h4>{rec.title}</h4>
+                    <p>{rec.description}</p>
+                  </div>
                 </div>
-                <div className="recommendation-content">
-                  <h4>{rec.title}</h4>
-                  <p>{rec.description}</p>
-                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="recent-activity">
+          <h3>Recent Activity</h3>
+          <div className="activity-list">
+            {tasks.slice(0, 3).map((task, index) => (
+              <div key={index} className="activity-item">
+                <span className="activity-icon">{task.status ? "✔️" : "🕒"}</span>
+                <span className="activity-text">
+                  {task.status ? "Completed" : "Updated"}: {task.taskName}
+                </span>
+                <span className="activity-time">
+                  {new Date(task.createdAt).toLocaleDateString()}
+                </span>
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="recent-activity">
-        <h3>Recent Activity</h3>
-        <div className="activity-list">
-          {tasks.slice(0, 3).map((task, index) => (
-            <div key={index} className="activity-item">
-              <span className="activity-icon">{task.status ? "✔️" : "🕒"}</span>
-              <span className="activity-text">
-                {task.status ? "Completed" : "Updated"}: {task.taskName}
-              </span>
-              <span className="activity-time">
-                {new Date(task.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-          ))}
+        <div className="motivation-quote">
+          <blockquote>
+            "Productivity is never an accident. It is always the result of a commitment to excellence."
+          </blockquote>
         </div>
-      </div>
 
-      <div className="motivation-quote">
-        <blockquote>
-          "Productivity is never an accident. It is always the result of a commitment to excellence."
-        </blockquote>
+        {/* Mobile Navigation */}
+        <nav className="mobile-nav">
+          {navItems.map((item, index) => (
+            <a
+              key={index}
+              href={item.path}
+              className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(item.path);
+              }}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span>{item.label}</span>
+            </a>
+          ))}
+        </nav>
       </div>
-
-      {/* Mobile Navigation */}
-      <nav className="mobile-nav">
-        {navItems.map((item, index) => (
-          <a
-            key={index}
-            href={item.path}
-            className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(item.path);
-            }}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            <span>{item.label}</span>
-          </a>
-        ))}
-      </nav>
     </div>
   );
 }

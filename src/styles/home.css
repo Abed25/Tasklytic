@@ -43,7 +43,15 @@
   }
 }
 
+.home-container {
+  display: flex;
+  min-height: 100vh;
+}
+
 .dashboard-container {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  transition: margin-left 0.3s ease, width 0.3s ease;
   padding: 2rem;
   min-height: 100vh;
   background: linear-gradient(-45deg, #f6f9fc, #eef2f7, #f0f4f8, #e8edf2);
@@ -54,6 +62,14 @@
   gap: 2rem;
   position: relative;
   overflow: hidden;
+  z-index: 1;
+}
+
+/* Fix for collapsed sidebar */
+.home-container .sidebar.collapsed ~ .dashboard-container,
+.sidebar.collapsed + .dashboard-container {
+  margin-left: 80px;
+  width: calc(100% - 80px);
 }
 
 .dashboard-container::before {
@@ -519,6 +535,8 @@
 
 @media (max-width: 768px) {
   .dashboard-container {
+    margin-left: 80px;
+    width: calc(100% - 80px);
     padding: 0;
     gap: 1rem;
     background: #f8fafc;

@@ -5,18 +5,18 @@ import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { auth } from "../../firebase";
-import { useAuth } from "../context/AuthProvider"; // ✅ useAuth hook
+import { useAuth } from "../context/AuthProvider";
 import "../styles/header.css";
 
 const MySwal = withReactContent(Swal);
 
 export default function Header() {
   const navigate = useNavigate();
-  const { user } = useAuth(); // ✅ get user from context
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     await signOut(auth);
-    navigate("/"); // Optional: redirect to login/home after logout
+    navigate("/");
   };
 
   const confirmLogout = async () => {
