@@ -563,6 +563,26 @@
     position: relative;
     margin-top: 20px;
   }
+  .features-section {
+    height: auto !important;
+    min-height: unset !important;
+    max-height: unset !important;
+  }
+  .feature-icon {
+    margin-top: 60px;
+    margin-bottom: 16px;
+    font-size: 2rem;
+    }
+  .feature-card {
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .features-grid {
+    align-items: start;
+  }
+  .landing {
+    overflow: visible;
+  }
 }
 
 /* Add water ripple effect to cards */
