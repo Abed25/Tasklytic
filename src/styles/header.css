@@ -1,5 +1,5 @@
 .header {
-  width: 100vw;
+  width: auto;
   left: 0;
   right: 0;
   background: #fff;
@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.2rem 2rem 1.2rem 2rem;
+  padding: 1.2rem 60px 1.2rem 100px;
   box-shadow: 0 2px 16px 0 #00c6ff11;
   position: sticky;
   top: 0;
@@ -29,6 +29,7 @@
   background: none;
   border-radius: 50%;
   transition: color 0.2s, background 0.2s;
+  margin: 0 5px;
 }
 
 .header svg:hover {
@@ -36,21 +37,21 @@
   background: #e0f7fa;
 }
 
-[data-theme='dark'] .header {
+[data-theme="dark"] .header {
   background: #181f2a;
   color: #e0f7fa;
   box-shadow: 0 2px 16px 0 #232b3933;
 }
 
-[data-theme='dark'] .header h2 {
+[data-theme="dark"] .header h2 {
   color: #e0f7fa;
 }
 
-[data-theme='dark'] .header svg {
+[data-theme="dark"] .header svg {
   color: #4dd0e1;
 }
 
-[data-theme='dark'] .header svg:hover {
+[data-theme="dark"] .header svg:hover {
   color: #fff;
   background: #232b39;
 }
