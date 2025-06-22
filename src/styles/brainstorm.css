@@ -1,0 +1,120 @@
+.brainstorm-container {
+  max-width: 600px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 #00c6ff11, 0 1.5px 8px 0 #00c6ff08;
+  padding: 2.5rem 2rem 2rem 2rem;
+  border: 1px solid #b2ebf2;
+}
+
+.brainstorm-container h2 {
+  font-size: 2rem;
+  color: #155263;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brainstorm-container p {
+  color: #4dd0e1;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.brainstorm-textarea {
+  width: 100%;
+  min-height: 90px;
+  border-radius: 0.75rem;
+  border: 1.5px solid #b2ebf2;
+  padding: 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  resize: vertical;
+  background: #f8fafc;
+  transition: border-color 0.2s;
+}
+
+.brainstorm-textarea:focus {
+  outline: none;
+  border-color: #4dd0e1;
+  background: #e0f7fa;
+}
+
+.brainstorm-save-btn {
+  background: linear-gradient(90deg, #4dd0e1 0%, #00c6ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 #00c6ff11;
+  transition: background 0.2s, transform 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.brainstorm-save-btn:hover {
+  background: linear-gradient(90deg, #00c6ff 0%, #4dd0e1 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.brainstorm-ideas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.brainstorm-idea-item {
+  background: #e0f7fa;
+  margin-bottom: 1rem;
+  padding: 1.1rem 1rem 0.7rem 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px 0 #00c6ff08;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.brainstorm-idea-item:hover {
+  box-shadow: 0 4px 16px 0 #00c6ff11;
+}
+
+.brainstorm-idea-text {
+  font-weight: 500;
+  color: #155263;
+  font-size: 1.08rem;
+  margin-bottom: 0.3rem;
+}
+
+.brainstorm-idea-date {
+  font-size: 0.85rem;
+  color: #4dd0e1;
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .brainstorm-container {
+    max-width: 600px;
+    margin: 2.5rem auto;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 #00c6ff11, 0 1.5px 8px 0 #00c6ff08;
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #b2ebf2;
+  }
+  .brainstorm-mobile-sticky {
+    position: static;
+    left: unset;
+    right: unset;
+    bottom: unset;
+    background: unset;
+    box-shadow: unset;
+    padding: 0;
+    z-index: unset;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+    width: 100%;
+    max-width: 100%;
+  }
+} 

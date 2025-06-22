@@ -16,6 +16,7 @@ import MilestoneDay from "./milestones/pages/MilestoneDay"; // ✅ Import this
 import CalendarPage from "./pages/Calendar";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import Brainstorm from "./pages/Brainstorm";
 
 function Layout() {
   return (
@@ -47,6 +48,7 @@ function Layout() {
             <Route path="/milestones" element={<Milestones />} />
             <Route path="/milestones/:date" element={<MilestoneDay />} />{" "}
             {/* ✅ New Route */}
+            <Route path="/brainstorm" element={<Brainstorm />} />
           </Route>
         </Routes>
       </div>
