@@ -255,6 +255,7 @@ export default function Home() {
                 { icon: <FaBullseye />, text: "Milestones", to: "/milestones", color: "#8b5cf6" },
                 { icon: <FaChartLine />, text: "Analytics", to: "/analytics", color: "#ef4444" },
                 { icon: <FaClipboardList />, text: "Add Task", to: "/add-tasks", color: "#10b981" },
+                { icon: <FaBrain />, text: "Brainstorm", to: "/brainstorm", color: "#f59e0b" },
               ].map((item, idx) => (
                 <motion.div
             className="feature-card"
