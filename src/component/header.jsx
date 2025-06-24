@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { auth } from "../../firebase";
 import { useAuth } from "../context/AuthProvider";
-import { useTheme } from "../context/ThemeContext";
 import "../styles/header.css";
 
 const MySwal = withReactContent(Swal);
@@ -14,7 +13,6 @@ const MySwal = withReactContent(Swal);
 export default function Header() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
 
   React.useEffect(() => {
@@ -51,13 +49,7 @@ export default function Header() {
       {user && (
         <div className="header-icons">
           {isMobile && (
-            <button
-              onClick={toggleTheme}
-              title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-              style={{ background: "none", border: "none", cursor: "pointer", padding: 0, marginRight: 8 }}
-            >
-              {theme === "light" ? <FaMoon /> : <FaSun />}
-            </button>
+            <FaSun style={{ marginRight: 8 }} />
           )}
           <FaUserCircle
             title="Profile"
