@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useAuth } from "../context/AuthProvider";
 import { toast } from "react-toastify";
+import "../styles/login.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -27,6 +28,11 @@ const SignUp = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await handleSignUp();
+  };
+
   const handleGoogleSignUp = async () => {
     try {
       await loginWithGoogle();
@@ -40,32 +46,32 @@ const SignUp = () => {
   return (
     <div className="login">
       <h2>Sign Up</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ marginTop: "10px" }}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        style={{ marginTop: "10px" }}
-        required
-      />
-      <button onClick={handleSignUp} style={{ width: "90%" }}>
-        Sign Up
-      </button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+        <button type="submit">
+          Sign Up
+        </button>
+      </form>
       <div className="divider">
         <span>OR</span>
       </div>
