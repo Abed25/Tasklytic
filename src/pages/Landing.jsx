@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle, FaRocket, FaChartLine, FaBell, FaStar, FaUsers, FaShieldAlt, FaSync } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import image from "../assets/todo-app-preview.webp";
 import "../styles/landing.css";
 import "../styles/button.css";
@@ -11,9 +11,17 @@ import "../styles/button.css";
 export default function Landing() {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   const handleLogout = async () => {
     await signOut(auth);
+  };
+
+  const track = (action, params = {}) => {
+    try {
+      if (window.gtag) window.gtag("event", action, params);
+      else if (window.dataLayer) window.dataLayer.push({ event: action, ...params });
+    } catch (e) {}
   };
 
   const features = [
@@ -50,58 +58,54 @@ export default function Landing() {
     { number: "99.9%", label: "Uptime", icon: <FaSync /> }
   ];
 
-  const testimonials = [
-    {
-      quote: "This app has completely transformed how I manage my tasks. The interface is beautiful and the features are exactly what I needed.",
-      author: "Sarah Johnson",
-      role: "Product Manager",
-      company: "TechCorp"
-    },
-    {
-      quote: "The productivity insights have helped me optimize my workflow and achieve more in less time. Highly recommended!",
-      author: "Michael Chen",
-      role: "Software Engineer",
-      company: "InnovateX"
-    }
-  ];
+  const heroInitial = prefersReducedMotion ? {} : { opacity: 0, y: 20 };
+  const heroAnimate = prefersReducedMotion ? {} : { opacity: 1, y: 0 };
+  const heroTransitionFast = prefersReducedMotion ? { duration: 0 } : { duration: 0.8 };
 
   return (
     <div className="landing">
       <div className="landing-content">
         <div className="hero-section">
+          {/* Decorative blobs */}
+          <div className="blob cyan b1" />
+          <div className="blob purple b2" />
+          <div className="blob pink b3" />
+
           <div className="hero-text">
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={heroInitial}
+              animate={heroAnimate}
+              transition={heroTransitionFast}
             >
               Transform Your Productivity
             </motion.h1>
             <motion.p
               className="hero-subtitle"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={heroInitial}
+              animate={heroAnimate}
+              transition={{ ...heroTransitionFast, delay: 0.2 }}
             >
               Experience the future of task management with our intelligent To-Do app.
               Stay organized, focused, and achieve more every day.
             </motion.p>
             <motion.div
               className="cta-buttons"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              initial={heroInitial}
+              animate={heroAnimate}
+              transition={{ ...heroTransitionFast, delay: 0.4 }}
             >
               <button
-                onClick={() => navigate(user ? "/home" : "/signup")}
-                className="cta-button primary"
+                onClick={() => { track("cta_primary_click", { location: "hero" }); navigate(user ? "/home" : "/signup"); }}
+                className="cta-button primary neon"
+                aria-label={user ? "Go to Dashboard" : "Get Started Free"}
               >
                 {user ? "Go to Dashboard" : "Get Started Free"}
               </button>
               {!user && (
                 <button
-                  onClick={() => navigate("/login")}
+                  onClick={() => { track("cta_secondary_click", { location: "hero" }); navigate("/login"); }}
                   className="cta-button secondary"
+                  aria-label="Sign In"
                 >
                   Sign In
                 </button>
@@ -111,10 +115,11 @@ export default function Landing() {
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
-                  className="stat-item"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                  className="stat-item glass glow"
+                  initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.8 }}
+                  whileInView={prefersReducedMotion ? {} : { opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.6 + index * 0.1 }}
                 >
                   <div className="stat-icon">{stat.icon}</div>
                   <div className="stat-number">{stat.number}</div>
@@ -124,12 +129,17 @@ export default function Landing() {
             </div>
           </div>
           <motion.div
-            className="hero-image"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            className="hero-image hero-visual gradient-border glow"
+            initial={prefersReducedMotion ? {} : { opacity: 0, x: 50 }}
+            animate={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
+            transition={heroTransitionFast}
           >
-            <img src={image} alt="App Preview" className="app-preview" />
+            <div className="frame glass">
+              <picture>
+                <source srcSet={image} type="image/webp" />
+                <img src={image} alt="Tasklytic app preview" className="app-preview" loading="lazy" decoding="async" />
+              </picture>
+            </div>
             <div className="floating-badge">
               <span>✨ Trusted by 10,000+ users</span>
             </div>
@@ -149,9 +159,9 @@ export default function Landing() {
 
         <div className="features-section">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={heroInitial}
+            whileInView={heroAnimate}
+            transition={heroTransitionFast}
             viewport={{ once: true }}
           >
             Why Choose Our App?
@@ -160,10 +170,10 @@ export default function Landing() {
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className="feature-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="feature-card glass glow"
+                initial={heroInitial}
+                whileInView={heroAnimate}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 style={{ "--feature-color": feature.color }}
               >
@@ -177,22 +187,22 @@ export default function Landing() {
 
         <div className="testimonial-section">
           <div className="testimonial-grid">
-            {testimonials.map((testimonial, index) => (
+            {[...Array(2)].map((_, index) => (
               <motion.div
                 key={index}
-                className="testimonial-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className="testimonial-card glass glow"
+                initial={heroInitial}
+                whileInView={heroAnimate}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
                 <div className="quote-icon">"</div>
-                <p className="quote">{testimonial.quote}</p>
+                <p className="quote">{index === 0 ? "This app has completely transformed how I manage my tasks. The interface is beautiful and the features are exactly what I needed." : "The productivity insights have helped me optimize my workflow and achieve more in less time. Highly recommended!"}</p>
                 <div className="testimonial-author">
                   <div className="author-info">
-                    <strong>{testimonial.author}</strong>
-                    <span>{testimonial.role}</span>
-                    <span className="company">{testimonial.company}</span>
+                    <strong>{index === 0 ? "Sarah Johnson" : "Michael Chen"}</strong>
+                    <span>{index === 0 ? "Product Manager" : "Software Engineer"}</span>
+                    <span className="company">{index === 0 ? "TechCorp" : "InnovateX"}</span>
                   </div>
                 </div>
               </motion.div>
@@ -202,9 +212,9 @@ export default function Landing() {
 
         <motion.div
           className="landing-footer"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={heroInitial}
+          whileInView={heroAnimate}
+          transition={heroTransitionFast}
           viewport={{ once: true }}
         >
           {user ? (
@@ -212,12 +222,13 @@ export default function Landing() {
               Logout
             </button>
           ) : (
-            <div className="footer-cta">
+            <div className="footer-cta glass glow">
               <h3>Ready to boost your productivity?</h3>
               <p>Join thousands of users who have transformed their workflow</p>
               <button
-                onClick={() => navigate("/signup")}
-                className="cta-button primary"
+                onClick={() => { track("cta_primary_click", { location: "footer" }); navigate("/signup"); }}
+                className="cta-button primary neon"
+                aria-label="Create Free Account"
               >
                 Create Free Account
               </button>
