@@ -94,6 +94,52 @@
   text-align: right;
 }
 
+.brainstorm-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #b2ebf2;
+  background: #ffffff;
+  color: #155263;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.action-btn:hover { background: #e0f7fa; }
+.action-btn.edit { border-color: #80deea; }
+.action-btn.save { border-color: #10b981; color: #0f5132; }
+.action-btn.cancel { border-color: #94a3b8; color: #334155; }
+.action-btn.delete { border-color: #ef4444; color: #7f1d1d; }
+
+.brainstorm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #b2ebf2;
+  color: #155263;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+}
+.refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.refresh-btn:hover { background: #e0f7fa; }
+
 @media (max-width: 700px) {
   .brainstorm-container {
     max-width: 600px;
