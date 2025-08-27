@@ -62,6 +62,48 @@ export default function Landing() {
   const heroAnimate = prefersReducedMotion ? {} : { opacity: 1, y: 0 };
   const heroTransitionFast = prefersReducedMotion ? { duration: 0 } : { duration: 0.8 };
 
+  const simpleLanding = true;
+  if (simpleLanding) {
+    return (
+      <div className="landing">
+        <div className="landing-content">
+          <div className="hero-section">
+            <div className="hero-text">
+              <motion.h1 initial={heroInitial} animate={heroAnimate} transition={heroTransitionFast}>
+                Transform Your Productivity
+              </motion.h1>
+              <motion.p className="hero-subtitle" initial={heroInitial} animate={heroAnimate} transition={{ ...heroTransitionFast, delay: 0.2 }}>
+                A simple, fast way to plan your day and get more done.
+              </motion.p>
+              <motion.div className="cta-buttons" initial={heroInitial} animate={heroAnimate} transition={{ ...heroTransitionFast, delay: 0.4 }}>
+                <button
+                  onClick={() => { track("cta_primary_click", { location: "hero" }); navigate(user ? "/home" : "/signup"); }}
+                  className="cta-button primary neon"
+                  aria-label={user ? "Go to Dashboard" : "Get Started Free"}
+                >
+                  {user ? "Go to Dashboard" : "Get Started Free"}
+                </button>
+                {!user && (
+                  <button onClick={() => navigate("/login")} className="cta-button secondary" aria-label="Sign In">
+                    Sign In
+                  </button>
+                )}
+              </motion.div>
+            </div>
+            <motion.div className="hero-image hero-visual gradient-border glow" initial={heroInitial} animate={heroAnimate} transition={heroTransitionFast}>
+              <div className="frame glass">
+                <picture>
+                  <source srcSet={image} type="image/webp" />
+                  <img src={image} alt="Tasklytic app preview" className="app-preview" loading="lazy" decoding="async" />
+                </picture>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing">
       <div className="landing-content">
