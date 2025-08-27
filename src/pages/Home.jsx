@@ -43,6 +43,8 @@ export default function Home() {
   const [chartData, setChartData] = useState([]);
   const [pieData, setPieData] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+  const [dueToday, setDueToday] = useState([]);
+  const [overdue, setOverdue] = useState([]);
 
   const [animatedProductivity, setAnimatedProductivity] = useState(0);
   const prevProductivity = useRef(0);
@@ -118,6 +120,21 @@ export default function Home() {
             { name: "Completed", value: completed },
             { name: "Pending", value: pending },
         ]);
+
+        // Today panel: due today and overdue
+        const startOfToday = new Date();
+        startOfToday.setHours(0,0,0,0);
+        const endOfToday = new Date();
+        endOfToday.setHours(23,59,59,999);
+
+        const isDueToday = (t) => t.dueDate && new Date(t.dueDate) >= startOfToday && new Date(t.dueDate) <= endOfToday;
+        const isOverdue = (t) => t.dueDate && new Date(t.dueDate) < startOfToday;
+
+        const dueTodayList = tasksData.filter(t => !t.status && isDueToday(t)).sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate)).slice(0, 5);
+        const overdueList = tasksData.filter(t => !t.status && isOverdue(t)).sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate)).slice(0, 5);
+
+        setDueToday(dueTodayList);
+        setOverdue(overdueList);
 
         // Process Smart Recommendations
         const recs = [];
@@ -321,6 +338,43 @@ export default function Home() {
               </div>
             ))}
           </div>
+          </motion.div>
+          <motion.div className="grid-card today-widget" custom={1.3} variants={cardVariants} initial="hidden" animate="visible">
+            <h3 className="widget-title">Today</h3>
+            <div className="today-columns">
+              <div className="today-col">
+                <h4>Due Today ({dueToday.length})</h4>
+                {dueToday.length === 0 ? (
+                  <p className="muted">Nothing due today 🎉</p>
+                ) : (
+                  <ul className="today-list">
+                    {dueToday.map(t => (
+                      <li key={t.id} onClick={() => navigate('/task/' + encodeURIComponent(t.taskName))}>
+                        <span className={`priority-dot ${t.priority || 'normal'}`}></span>
+                        <span className="today-name">{t.taskName}</span>
+                        <span className="today-time">{new Date(t.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="today-col">
+                <h4>Overdue ({overdue.length})</h4>
+                {overdue.length === 0 ? (
+                  <p className="muted">No overdue tasks</p>
+                ) : (
+                  <ul className="today-list">
+                    {overdue.map(t => (
+                      <li key={t.id} onClick={() => navigate('/task/' + encodeURIComponent(t.taskName))}>
+                        <span className={`priority-dot ${t.priority || 'normal'}`}></span>
+                        <span className="today-name">{t.taskName}</span>
+                        <span className="today-date">{new Date(t.dueDate).toLocaleDateString()}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </motion.div>
           <motion.div className="grid-card recent-activity-widget" custom={6} variants={cardVariants} initial="hidden" animate="visible">
             <h3 className="widget-title">Recent Activity</h3>

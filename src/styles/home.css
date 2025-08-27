@@ -77,8 +77,9 @@
   grid-template-areas:
     "hero hero hero countdown countdown"
     "quick-actions quick-actions quick-actions quick-actions quick-actions"
-    "stats stats charts pie-chart pie-chart"
-    "recommendations recommendations activity motivation motivation";
+    "stats stats charts charts charts"
+    "recommendations recommendations activity motivation motivation"
+    "pie-chart pie-chart pie-chart pie-chart pie-chart";
 }
 
 /* === Card Style (Glassmorphism + Neon) === */
@@ -530,6 +531,51 @@
   }
 }
 
+@media (min-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(220px, auto);
+    gap: 1.25rem;
+  }
+  /* Hero + Countdown top row */
+  .hero-widget {
+    grid-column: 1 / span 7;
+    min-height: 260px;
+  }
+  .countdown-widget {
+    grid-column: 8 / span 5;
+    min-height: 260px;
+  }
+  /* Quick actions full width below */
+  .quick-actions {
+    grid-column: 1 / span 12;
+    min-height: 180px;
+  }
+  /* KPIs and charts middle row */
+  .stats-widget {
+    grid-column: 1 / span 6;
+  }
+  .charts-widget {
+    grid-column: 7 / span 6;
+  }
+  /* Today + Pie + Recommendations / Activity / Deadlines */
+  .today-widget {
+    grid-column: 1 / span 5;
+  }
+  .pie-chart-widget {
+    grid-column: 6 / span 3;
+  }
+  .recommendations-widget {
+    grid-column: 9 / span 4;
+  }
+  .recent-activity-widget {
+    grid-column: 1 / span 5;
+  }
+  .upcoming-deadlines-widget {
+    grid-column: 6 / span 3;
+  }
+}
+
 .digital-clock {
   display: flex;
   flex-direction: column;
@@ -625,3 +671,56 @@
   text-shadow: 0 0 6px #00c6ff55;
   font-weight: 500;
 }
+
+/* Today widget */
+.today-widget {
+}
+.today-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.today-col h4 { margin: 0 0 0.5rem 0; }
+.today-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.today-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.6rem;
+  border: 1px solid #b2ebf2;
+  cursor: pointer;
+}
+.today-list li:hover {
+  background: var(--glass-border);
+  border-color: #4dd0e1;
+}
+.priority-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.priority-dot.high { background: #ef4444; }
+.priority-dot.medium { background: #f59e0b; }
+.priority-dot.low { background: #10b981; }
+.priority-dot.normal { background: #94a3b8; }
+.today-name { font-weight: 600; }
+.today-time, .today-date { color: var(--text-secondary); font-size: 0.85rem; }
+.muted { color: var(--text-secondary); font-size: 0.95rem; }
+
+@media (max-width: 768px) {
+  .today-columns { grid-template-columns: 1fr; }
+}
+
+/* Overlap fix for charts */
+.charts-widget, .pie-chart-widget { position: relative; z-index: 0; }
+.charts-widget > div { height: 300px; }
+.pie-chart-widget > div { height: 300px; }
