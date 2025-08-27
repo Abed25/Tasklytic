@@ -268,8 +268,8 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
-  align-content: center;
-  height: 100%;
+  align-content: start;
+  align-items: start;
 }
 .stat-card {
   display: flex;

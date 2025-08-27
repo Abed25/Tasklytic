@@ -16,7 +16,7 @@ import {
   FaRegClock,
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { AreaChart, Area, PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, PieChart, Pie, Cell, Tooltip, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import Sidebar from "../component/Sidebar";
 import MonthlyCountdown from "../component/MonthlyCountdown";
 import DigitalClock from "../component/DigitalClock";
@@ -224,6 +224,13 @@ export default function Home() {
 
   const PIE_COLORS = ["#10b981", "#f59e0b"];
 
+  // Derived UI helpers
+  const upcoming = tasks
+    .filter(task => task.dueDate && new Date(task.dueDate) > new Date())
+    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+    .slice(0, 3);
+  const hasBreakdown = pieData && pieData.some(d => d.value > 0);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
@@ -305,7 +312,9 @@ export default function Home() {
             <h3 className="widget-title">Productivity Trend</h3>
             <div style={{height: '200px'}}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
+                <AreaChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 20 }}>
+                  <XAxis dataKey="name" label={{ value: 'Day', position: 'insideBottom', offset: -10 }} />
+                  <YAxis allowDecimals={false} label={{ value: 'Tasks', angle: -90, position: 'insideLeft' }} />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(5px)', border: 'none', borderRadius: '1rem' }} />
                   <Area type="monotone" dataKey="tasks" stroke="#4DD0E1" strokeWidth={2} fillOpacity={0.4} fill="url(#colorUv)" />
               </AreaChart>
@@ -314,16 +323,20 @@ export default function Home() {
           </motion.div>
           <motion.div className="grid-card pie-chart-widget" custom={4} variants={cardVariants} initial="hidden" animate="visible">
             <h3 className="widget-title">Task Breakdown</h3>
-            <div style={{height: '200px'}}>
-              <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                  <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} innerRadius={50} labelLine={false}>
-                    {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />)}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+            {hasBreakdown ? (
+              <div style={{height: '200px'}}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} innerRadius={50} labelLine={false}>
+                      {pieData.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />)}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <p className="muted">No data yet. Complete some tasks to see the breakdown.</p>
+            )}
           </motion.div>
           <motion.div className="grid-card recommendations-widget" custom={5} variants={cardVariants} initial="hidden" animate="visible">
             <h3 className="widget-title">Smart Suggestions</h3>
@@ -391,19 +404,19 @@ export default function Home() {
           <motion.div className="grid-card upcoming-deadlines-widget" custom={7} variants={cardVariants} initial="hidden" animate="visible">
             <h3 className="widget-title">Upcoming Deadlines</h3>
             <div className="deadlines-list">
-              {tasks
-                .filter(task => task.dueDate && new Date(task.dueDate) > new Date())
-                .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-                .slice(0, 3)
-                .map(task => (
+              {upcoming.length === 0 ? (
+                <p className="muted">No upcoming deadlines</p>
+              ) : (
+                upcoming.map(task => (
                   <div className="deadline-item" key={task.id}>
                     <div className="deadline-info">
                       <h4>{task.taskName}</h4>
                       <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
-      </div>
+                    </div>
                     <div className={`priority-indicator ${task.priority}`}></div>
-      </div>
-                ))}
+                  </div>
+                ))
+              )}
             </div>
           </motion.div>
         </div>
