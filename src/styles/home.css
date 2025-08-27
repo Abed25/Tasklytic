@@ -21,6 +21,7 @@
   color: var(--text-primary);
   min-height: 100vh;
   position: relative;
+  border: rgba(128, 128, 128, 0.466) 1px solid;
 }
 [data-theme="dark"] .home-container {
   background: linear-gradient(120deg, #181f2a 0%, #232b39 100%);
