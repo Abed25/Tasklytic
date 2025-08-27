@@ -1,0 +1,73 @@
+.subheader.glass-subheader {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(12px) saturate(120%);
+  background: rgba(255, 255, 255, 0.35);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.6rem 1rem;
+}
+
+[data-theme="dark"] .subheader.glass-subheader {
+  background: rgba(13, 22, 34, 0.55);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.subheader .nav-section {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.subheader .nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.8rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+[data-theme="dark"] .subheader .nav-btn {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.subheader .nav-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.8);
+  border-color: #4dd0e1;
+  box-shadow: 0 6px 18px rgba(77, 208, 225, 0.18);
+}
+
+[data-theme="dark"] .subheader .nav-btn:hover {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+.subheader .nav-btn.active {
+  background: linear-gradient(135deg, #4dd0e1, #00c6ff);
+  color: #0b0f14;
+  border-color: transparent;
+  box-shadow: 0 8px 24px rgba(0, 198, 255, 0.25);
+}
+
+.subheader .nav-btn svg {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .subheader.glass-subheader {
+    padding: 0.5rem 0.6rem;
+  }
+  .subheader .nav-section {
+    gap: 0.4rem;
+  }
+  .subheader .nav-btn {
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.7rem;
+  }
+} 
